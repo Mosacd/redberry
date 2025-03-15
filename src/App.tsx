@@ -11,10 +11,10 @@ function App() {
       <img src={logo} alt="" />
       <div className='flex gap-[40px]'>
         <button className='py-[10px] px-[20px] border-[#8338EC] border-[1px] rounded-[5px]
-         leading-[100%] tracking-[0] text-[16px] font-[400] 
+         
          font-[FiraGO] text-[#212529] cursor-pointer hover:border-[#B588F4]'>თანამშრომლის შექმნა</button>
         <button className='py-[10px] px-[20px] bg-[#8338EC] rounded-[5px]
-         leading-[100%] tracking-[0] text-[16px] font-[400]  font-[FiraGO]
+         leading-[100%]
           text-[#FFFFFF] cursor-pointer hover:bg-[#B588F4]'><div className='flex gap-[4px]
            items-center'><img src={add} alt="" className='w-[20px] h-[20px]' /> შექმენი ახალი დავალება</div></button>
       </div>

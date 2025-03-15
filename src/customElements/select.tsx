@@ -1,25 +1,39 @@
 // import Icon from '@/assets/Icon.svg'
 
+import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 
-// const options = [
-//     "მართვის დეპარტამენტი",
-//     "ფინანსის დეპარტამენტი",
-//     "ლოჯისტიკის დეპარტამენტი",
-//     "IT დეპარტამენტი",
-//   ];
+type options =  "თანამშრომელი" | "პრიორიტეტი" | "დეპარტამენტი" | "none"
   
 const CustomSelect = () => {
-    const [selectedOption, setSelectedOption] =useState<"თანამშრომელი" | "პრიორიტეტი" | "დეპარტამენტი"| "none">();
+    const [selectedOption, setSelectedOption] =useState<options>();
     
+    const handleButtonClick = (option: options) => (e: React.MouseEvent) => {
+        e.stopPropagation(); // Stop the event from bubbling up
+        
+        // Toggle the dropdown - close if already open, open if closed
+        if (selectedOption === option) {
+          setSelectedOption('none');
+        } else {
+          setSelectedOption(option);
+          
+          // Set up a one-time click handler on the document
+          setTimeout(() => {
+            const closeDropdown = () => {
+              setSelectedOption('none');
+              document.removeEventListener('click', closeDropdown);
+            };
+            document.addEventListener('click', closeDropdown);
+          }, 0);
+        }
+      };
+      
   return (
     <>
       <button
-        className=""
-        onClick={() => { 
-            setSelectedOption("დეპარტამენტი");
-        }}
-        onBlur={() => setSelectedOption('none')}
+        
+        onClick={handleButtonClick("დეპარტამენტი")}
+    
       >
         <div className="flex gap-[8px] px-[18px] py-[10px] rounded-[10px]
         items-center cursor-pointer">
@@ -32,40 +46,56 @@ const CustomSelect = () => {
 <path d="M6.70711 8.29289C6.31658 7.90237 5.68342 7.90237 5.29289 8.29289C4.90237 8.68342 4.90237 9.31658 5.29289 9.70711L11.2929 15.7071C11.6834 16.0976 12.3166 16.0976 12.7071 15.7071L18.7071 9.70711C19.0976 9.31658 19.0976 8.68342 18.7071 8.29289C18.3166 7.90237 17.6834 7.90237 17.2929 8.29289L12 13.5858L6.70711 8.29289Z" fill=""/>
 </svg>
 </div>
-{/* {selectedOption == "დეპარტამენტი" &&  */}
-<form className={`w-full pt-[40px] px-[30px] pb-[20px] absolute border-[0.5px] border-[#8338EC] top-[55px] rounded-[10px] h-[274px]`} onClick={(e) => {e.stopPropagation()}}>
-  <div className="flex flex-col gap-[22px] items-start max-w-fit *:flex *:gap-[15px]">
-    <div>
-  <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
-  <label htmlFor="vehicle1"> I have a bike</label>
-  </div>
-  <div>
-  <input type="checkbox" id="vehicle2" name="vehicle2" value="Car" />
-  <label htmlFor="vehicle2"> I have a car</label>
-  </div>
-  <div>
-  <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat" />
-  <label htmlFor="vehicle3"> I have a boat</label>
-  </div>
-  <div>
-  <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat" />
-  <label htmlFor="vehicle3"> I have a boat</label>
-  </div>
-  </div>
- <button></button>
-
-   </form>
-{/* } */}
 
       </button>
+      {selectedOption == "დეპარტამენტი" && 
+<form className={`flex flex-col w-full pt-[40px] px-[30px] pb-[20px] absolute border-[0.5px] border-[#8338EC] top-[55px] rounded-[10px] h-[274px] gap-[25px]`} onClick={(e) => e.stopPropagation()}>
+  <div className="flex flex-col gap-[22px] items-start max-w-fit *:flex *:gap-[15px] *:items-center **:cursor-pointer">
+    
+    <label
+        htmlFor="department"
+      >
+    <Checkbox id="department" checkmarkColor="stroke-[#FD9A6A]" className="border-[#FD9A6A]" />
+    
+        მარკეტინგის დეპარტამენტი
+      </label>
+  
+      <label
+        htmlFor="Design"
+      >
+  <Checkbox id="Design" checkmarkColor="stroke-[#FF66A8]" className="border-[#FF66A8]" />
+     
+        დიზაინის დეპარტამენტი
+      </label>
+
+      <label
+        htmlFor="Logistics"
+      >
+  <Checkbox id="Logistics" checkmarkColor="stroke-[#89B6FF]" className="border-[#89B6FF]" />
+     
+       ლოჯისტიკის დეპარტამენტი
+      </label>
+
+      <label
+        htmlFor="IT"
+      >
+  <Checkbox id="IT" checkmarkColor="stroke-[#FFD86D]" className="border-[#FFD86D]" />
+      
+        IT დეპარტამენტი
+      </label>
+  
+  </div>
+  <div className="w-full flex justify-end">
+ <button className="py-[9px] px-[20px] bg-[#8338EC]  rounded-[20px] text-[#FFFFFF] w-[155px] cursor-pointer" onClick={(e) =>{e.preventDefault()}}>არჩევა</button>
+ </div>
+   </form>
+}
 
       <button
         className="flex gap-[8px] px-[18px] py-[10px] rounded-[10px]  cursor-pointer 
         items-center"
-        onClick={() => {
-            setSelectedOption("პრიორიტეტი");
-        }}
-        onBlur={() => setSelectedOption('none')}
+        onClick={handleButtonClick("პრიორიტეტი")}
+       
       >
         <span className={` ${selectedOption == "პრიორიტეტი" ? "text-[#8338EC]" : ""}`}>პრიორიტეტი</span>
         <svg
@@ -79,10 +109,8 @@ const CustomSelect = () => {
       <button
         className="flex gap-[8px] px-[18px] py-[10px] rounded-[10px]  cursor-pointer 
         items-center"
-        onClick={() => {
-            setSelectedOption("თანამშრომელი");
-        }}
-        onBlur={() => setSelectedOption('none')}
+        onClick={handleButtonClick("თანამშრომელი")}
+       
       >
         <span className={` ${selectedOption == "თანამშრომელი" ? "text-[#8338EC]" : ""}`}>თანამშრომელი</span>
         <svg
