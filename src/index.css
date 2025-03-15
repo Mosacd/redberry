@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+/* Additional reset rules */
+
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+h1,h2,h3,p,label,div {
+ font-family:FiraGo; 
+font-weight: 400;
+line-height: 100%;
+letter-spacing: 0%;
+}
+
+}
