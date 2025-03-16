@@ -22,9 +22,9 @@ const CustomSelect:React.FC<{setAppliedDepartments: Dispatch<SetStateAction<stri
         const{data:priorities = [], } = useGetPriorities();
         const colorsDepartment = ["#FF66A8", "#FD9A6A", "#FFD86D", "#89B6FF", "#5FAA5B", "#D288C5", "#A3A65D"];
 
-        const [selectedDepartments, setSelectedDepartments] = useState<string[]>([]);
-        const [selectedPriorities, setSelectedPriorities] = useState<string[]>([]);
-        const [selectedEmployee, setSelectedEmployee] = useState<string | null>(null);
+        const [selectedDepartments, setSelectedDepartments] = useState<string[]>(appliedDepartments);
+        const [selectedPriorities, setSelectedPriorities] = useState<string[]>(appliedPriorities);
+        const [selectedEmployee, setSelectedEmployee] = useState<string | null>(appliedEmployee);
        
         const handleTagClick = (tag: string) => {
           if (appliedDepartments.includes(tag)) {
@@ -97,11 +97,11 @@ const CustomSelect:React.FC<{setAppliedDepartments: Dispatch<SetStateAction<stri
       };
       
   return (
-    <div className='px-[2px] flex max-w-fit gap-[45px] border-[1px] border-[#DEE2E6] rounded-[10px] relative'>
+    <div className='px-[2px] flex w-full justify-between  max-w-[688px] gap-[45px] border-[1px] border-[#DEE2E6] rounded-[10px] relative'>
       <button
         onClick={handleButtonClick("დეპარტამენტი")} >
         <div className="flex gap-[8px] px-[18px] py-[10px] rounded-[10px]
-        items-center cursor-pointer">
+        items-center cursor-pointer ">
         <span className={` ${selectedOption == "დეპარტამენტი" ? "text-[#8338EC]" : ""}`}>დეპარტამენტი</span>
         <svg
       className={` text-gray-600 transition-transform duration-200 ${
@@ -217,8 +217,8 @@ applyFilters();
                     <button className="flex h-[29px] gap-[4px] px-[10px] py-[6px]  border-[1px] bg-[#FFFFFF] border-[#CED4DA] rounded-[43px]"
                     onClick={() => handleTagClick(tag)}
                     >
-                        <span className={`text-[14px] text-[#343A40] text-center}
-                        ${appliedDepartments.length > 3 && (appliedEmployee && !tag.includes(appliedEmployee))  ? 'max-w-[100px] truncate' : ''}
+                        <span className={`text-[14px] text-[#343A40] text-center
+                        ${appliedDepartments.length > 3 && appliedDepartments.includes(tag) ? 'max-w-[100px] truncate' : ''}
                         `}>{tag}</span>
                         <svg className="" width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M10.5 4L3.5 11" stroke="#343A40" stroke-linecap="round" stroke-linejoin="round"/>
@@ -227,7 +227,7 @@ applyFilters();
                          </button>
                  )
             })}
-            <button onClick={handleAllTagClick} className="text-[14px] text-center text-[#343A40] px-[10px] py-[6px] rounded-[43px] bg-[#FFFFFF]">გასუფთავება</button>
+        { (appliedDepartments.length > 0 || appliedPriorities.length > 0 || appliedEmployee != null && appliedEmployee != "" ) && <button onClick={handleAllTagClick} className="text-[14px] text-center text-[#343A40] px-[10px] py-[6px] rounded-[43px] bg-[#FFFFFF]">გასუფთავება</button>}
         </div>
       </div>
   );

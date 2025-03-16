@@ -29,7 +29,8 @@ const TaskList:React.FC<{appliedDepartments:string[], appliedPriorities: string[
         return matchesDepartment && matchesPriority && matchesEmployee;
     });
 
-    return(<>
+    return(
+    <div className='w-[1680px] flex justify-center gap-[52px] mt-[79px]'>
         {statuses?.map((status, index) => {
 
         const filteredTasks = filteredItems?.filter((task) => task.status.id === status.id);
@@ -42,7 +43,10 @@ const TaskList:React.FC<{appliedDepartments:string[], appliedPriorities: string[
         </div>
         {filteredTasks.length > 0 && (filteredTasks?.map((task) => {
          
-        return( <div key={task.id} className={`flex flex-col w-[381px] h-[217px] p-[20px] gap-[28px] rounded-[15px] hover:cursor-pointer transition-all duration-300 ease-in-out]`}
+        return( 
+        
+        
+        <div key={task.id} className={`flex flex-col justify-between items-center w-[381px] h-[217px] p-[20px] gap-[28px] rounded-[15px] hover:cursor-pointer transition-all duration-300 ease-in-out]`}
             style={{ boxShadow: `0 0 0 1px ${colorsProgress[index]}` }}
           onMouseEnter={(e) => e.currentTarget.style.boxShadow = `0 0 0 2px ${colorsProgress[index]}`}
           onMouseLeave={(e) => e.currentTarget.style.boxShadow = `0 0 0 1px ${colorsProgress[index]}`}
@@ -62,7 +66,7 @@ const TaskList:React.FC<{appliedDepartments:string[], appliedPriorities: string[
                 </div>
                 <p className='text-[12px]'>{formattedDate(task.due_date)}</p>
                 </div>
-                <div className='flex flex-col gap-[12px] w-[320px]'>
+                <div className='flex flex-col justify-between h-[64px] gap-[12px] w-[320px]'>
             <h2 className='font-[600] text-[15px] text-[#212529]'>
              {task.name}
             </h2>
@@ -89,7 +93,7 @@ const TaskList:React.FC<{appliedDepartments:string[], appliedPriorities: string[
      
       })}
       
-      </>)
+      </div>)
       
 }
 

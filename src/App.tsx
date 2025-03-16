@@ -1,14 +1,18 @@
-import GeneralTaskPage from './pages/AddedTaskPage';
+import { Route, Routes } from 'react-router-dom';
+
+import DashboardLayout from './layout';
 
 
 function App() {
 
   return (
-    <>
-  
-  <GeneralTaskPage />
+   
+    <Routes>
+      <Route index element = {<DashboardLayout/>} />
+     
+    </Routes>
 
-    </>
+  
   )
 }
 
