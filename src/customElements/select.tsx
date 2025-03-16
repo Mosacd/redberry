@@ -2,6 +2,8 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { useGetDepartments } from "@/reactQuery/query/departments";
+import { useGetEmployees } from "@/reactQuery/query/employees";
+import { useGetPriorities } from "@/reactQuery/query/priorities";
 import { useState } from "react";
 
 type options =  "თანამშრომელი" | "პრიორიტეტი" | "დეპარტამენტი" | "none"
@@ -10,8 +12,10 @@ const CustomSelect = () => {
 
 
     const [selectedOption, setSelectedOption] =useState<options>();
-        const{data:departments = [], isLoading} =   useGetDepartments();
-  
+        const{data:departments = [], isLoading:isLoadingDep} =   useGetDepartments();
+        const{data:employees = [], isLoading:isLoadingEmp} = useGetEmployees();
+        const{data:priorities = [], isLoading:isLoadingPri} = useGetPriorities();
+
        const handleButtonClick = (option: options) => (e: React.MouseEvent) => {
         e.stopPropagation(); // Stop the event from bubbling up
         
@@ -41,7 +45,7 @@ const CustomSelect = () => {
       >
         <div className="flex gap-[8px] px-[18px] py-[10px] rounded-[10px]
         items-center cursor-pointer">
-        <span className={` ${selectedOption == "დეპარტამენტი" ? "text-[#8338EC]" : ""}`}>დედპარტამენტი</span>
+        <span className={` ${selectedOption == "დეპარტამენტი" ? "text-[#8338EC]" : ""}`}>დეპარტამენტი</span>
         <svg
       className={` text-gray-600 transition-transform duration-200 ${
         selectedOption == "დეპარტამენტი"  ? "rotate-180 fill-[#8338EC]" : "fill-[#0D0F10]"
@@ -98,6 +102,40 @@ const CustomSelect = () => {
 <path d="M6.70711 8.29289C6.31658 7.90237 5.68342 7.90237 5.29289 8.29289C4.90237 8.68342 4.90237 9.31658 5.29289 9.70711L11.2929 15.7071C11.6834 16.0976 12.3166 16.0976 12.7071 15.7071L18.7071 9.70711C19.0976 9.31658 19.0976 8.68342 18.7071 8.29289C18.3166 7.90237 17.6834 7.90237 17.2929 8.29289L12 13.5858L6.70711 8.29289Z" fill=""/>
 </svg>
       </button>
+
+      {selectedOption == "პრიორიტეტი" && 
+<form className={`flex flex-col w-full pt-[40px] px-[30px] pb-[20px] absolute border-[0.5px] border-[#8338EC] top-[55px] rounded-[10px] max-h-[275px] gap-[25px] bg-[#FFFF]`} onClick={(e) => e.stopPropagation()}>
+    
+<div className="flex flex-col gap-[22px] items-start max-w-fit *:flex *:gap-[15px] overflow-auto *:items-center **:cursor-pointer"  style={{
+          scrollbarWidth: "thin",
+          scrollbarColor: "#8338EC #ffffff",
+          msOverflowStyle: "none",
+          WebkitOverflowScrolling: "touch",
+          paddingRight: "16px",
+        }}>
+    {priorities.map((priority) =>{
+        return(
+            
+<label
+        htmlFor={priority.name}
+        key={priority.id}
+      >
+    <Checkbox id={priority.name} />
+    
+       {priority.name}
+      </label>
+  
+        )
+    })}
+      </div>
+    
+  <div className="w-full flex justify-end">
+ <button className="py-[9px] px-[20px] bg-[#8338EC]  rounded-[20px] text-[#FFFFFF] w-[155px] cursor-pointer" onClick={(e) =>{e.preventDefault()}}>არჩევა</button>
+ </div>
+   </form>
+}
+      
+
       <button
         className="flex gap-[8px] px-[18px] py-[10px] rounded-[10px]  cursor-pointer 
         items-center"
@@ -113,7 +151,40 @@ const CustomSelect = () => {
 <path d="M6.70711 8.29289C6.31658 7.90237 5.68342 7.90237 5.29289 8.29289C4.90237 8.68342 4.90237 9.31658 5.29289 9.70711L11.2929 15.7071C11.6834 16.0976 12.3166 16.0976 12.7071 15.7071L18.7071 9.70711C19.0976 9.31658 19.0976 8.68342 18.7071 8.29289C18.3166 7.90237 17.6834 7.90237 17.2929 8.29289L12 13.5858L6.70711 8.29289Z" fill=""/>
 </svg>
       </button>
-   
+
+      {selectedOption == "თანამშრომელი" && 
+<form className={`flex flex-col w-full pt-[40px] px-[30px] pb-[20px] absolute border-[0.5px] border-[#8338EC] top-[55px] rounded-[10px] max-h-[275px] gap-[25px] bg-[#FFFF]`} onClick={(e) => e.stopPropagation()}>
+    
+<div className="flex flex-col gap-[22px] items-start max-w-fit *:flex *:gap-[15px] overflow-auto *:items-center **:cursor-pointer"  style={{
+          scrollbarWidth: "thin",
+          scrollbarColor: "#8338EC #ffffff",
+          msOverflowStyle: "none",
+          WebkitOverflowScrolling: "touch",
+          paddingRight: "16px",
+        }}>
+    {employees.map((employee) =>{
+        return(
+            
+<label
+        htmlFor={employee.name}
+        className="flex gap-[10px]"
+        key={employee.id}
+      >
+    <Checkbox id={employee.name}/>
+       <img src={employee.avatar} alt="" className="w-[28px] h-[28px] rounded-full"/>
+       <p>{employee.name} {employee.surname}</p>
+       
+      </label>
+  
+        )
+    })}
+</div>
+    
+    <div className="w-full flex justify-end">
+   <button className="py-[9px] px-[20px] bg-[#8338EC]  rounded-[20px] text-[#FFFFFF] w-[155px] cursor-pointer" onClick={(e) =>{e.preventDefault()}}>არჩევა</button>
+   </div>
+     </form>
+     }   
  
       </>
   );

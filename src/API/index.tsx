@@ -5,3 +5,5 @@ const axiosConfig: CreateAxiosDefaults = {
 };
 
 export const httpClient = axios.create(axiosConfig);
+
+export const personalToken = import.meta.env.VITE_PERSONAL_TOKEN ;
