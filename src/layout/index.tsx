@@ -1,12 +1,12 @@
 import Header from "@/components/header";
-import GeneralTaskPage from "@/pages/AddedTaskPage";
+import { Outlet } from "react-router-dom";
 
 const DashboardLayout = () => {
 
     return(
         <>
             <Header /> 
-            <GeneralTaskPage />
+            <Outlet/>
             </> 
      )
 

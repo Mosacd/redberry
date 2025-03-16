@@ -1,4 +1,4 @@
-import CustomSelect from "@/pages/AddedTaskPage/filter";
+import CustomSelect from "@/pages/generalTaskPage/filter";
 import TaskList from "./traskList";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
