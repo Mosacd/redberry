@@ -1,4 +1,4 @@
-import { getStatuses, Status } from "@/API/status";
+import { getStatuses, Status } from "@/API/statuses";
 import { useQuery, UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 
 export const useGetStatuses = <T = Status[]>(

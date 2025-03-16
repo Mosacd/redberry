@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 
 function Checkbox({
   className,
-  checkmarkColor = "stroke-[#8338EC]", // Default color
+  checkmarkColor = "#8338EC", // Default color
   ...props
 }: React.ComponentProps<typeof CheckboxPrimitive.Root> & { checkmarkColor?: string }) {
   return (
@@ -27,7 +27,8 @@ function Checkbox({
     viewBox="0 0 14 10"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    className={cn("stroke-[#8338EC]", checkmarkColor)}
+   
+    style={{stroke: checkmarkColor}}
   >
     <path
       d="M12.3332 1.33337L4.99984 8.66671L1.6665 5.33337"

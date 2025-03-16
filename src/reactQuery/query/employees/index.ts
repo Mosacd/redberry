@@ -1,4 +1,4 @@
-import { Employee, getEmployees } from "@/API/tasks";
+import { Employee, getEmployees } from "@/API/employees";
 import { useQuery, UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 
 export const useGetEmployees= <T = Employee[]>(
