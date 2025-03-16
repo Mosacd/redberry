@@ -11,8 +11,9 @@ type options =  "თანამშრომელი" | "პრიორიტ�
 const CustomSelect:React.FC<{setAppliedDepartments: Dispatch<SetStateAction<string[]>>;
   setAppliedPriorities: Dispatch<SetStateAction<string[]>>,
   setAppliedEmployee: React.Dispatch<React.SetStateAction<string | null>>,
+  appliedDepartments:string[], appliedPriorities: string[]; appliedEmployee: string | null; 
   }>
- = ({setAppliedDepartments,setAppliedPriorities,setAppliedEmployee}
+ = ({setAppliedDepartments,setAppliedPriorities,setAppliedEmployee,appliedDepartments,appliedPriorities,appliedEmployee}
  ) => {
 
     const [selectedOption, setSelectedOption] =useState<options>('none');
@@ -24,7 +25,29 @@ const CustomSelect:React.FC<{setAppliedDepartments: Dispatch<SetStateAction<stri
         const [selectedDepartments, setSelectedDepartments] = useState<string[]>([]);
         const [selectedPriorities, setSelectedPriorities] = useState<string[]>([]);
         const [selectedEmployee, setSelectedEmployee] = useState<string | null>(null);
+       
+        const handleTagClick = (tag: string) => {
+          if (appliedDepartments.includes(tag)) {
+            setSelectedDepartments(prev => prev.filter(dep => dep !== tag));
+            setAppliedDepartments(prev => prev.filter(dep => dep !== tag));
+             // Remove from departments
+          } else if (appliedPriorities.includes(tag)) {
+            setSelectedPriorities(prev => prev.filter(pri => pri !== tag));
+            setAppliedPriorities(prev => prev.filter(pri => pri !== tag)); // Remove from priorities
+          } else if (appliedEmployee === tag.split(" ")[0]) {
+            setSelectedEmployee(null);
+            setAppliedEmployee(null); // Remove employee
+          }
+        };
 
+        const handleAllTagClick = () =>{
+          setSelectedDepartments([]);
+          setSelectedPriorities([]);
+          setSelectedEmployee(null);
+          setAppliedDepartments([]);
+          setAppliedPriorities([]);
+          setAppliedEmployee(null);
+        }
 
         const applyFilters = () => {
           setAppliedDepartments(selectedDepartments);
@@ -74,7 +97,7 @@ const CustomSelect:React.FC<{setAppliedDepartments: Dispatch<SetStateAction<stri
       };
       
   return (
-    <>
+    <div className='px-[2px] flex max-w-fit gap-[45px] border-[1px] border-[#DEE2E6] rounded-[10px] relative'>
       <button
         onClick={handleButtonClick("დეპარტამენტი")} >
         <div className="flex gap-[8px] px-[18px] py-[10px] rounded-[10px]
@@ -121,7 +144,7 @@ const CustomSelect:React.FC<{setAppliedDepartments: Dispatch<SetStateAction<stri
 
     
       {selectedOption != "none" && 
-<form className={`flex flex-col w-full pt-[40px] px-[30px] pb-[20px] absolute border-[0.5px] border-[#8338EC] top-[55px] rounded-[10px] max-h-[275px] gap-[25px] bg-[#FFFF]`} onClick={(e) => e.stopPropagation()}>
+<form className={`flex flex-col z-50 w-full pt-[40px] px-[30px] pb-[20px] absolute border-[0.5px] border-[#8338EC] top-[55px] rounded-[10px] max-h-[275px] gap-[25px] bg-[#FFFF]`} onClick={(e) => e.stopPropagation()}>
     
 <div className="flex flex-col gap-[22px] items-start max-w-fit *:flex *:gap-[15px] overflow-auto *:items-center **:cursor-pointer"  style={{
           scrollbarWidth: "thin",
@@ -186,8 +209,27 @@ applyFilters();
  </div>
    </form>
 }
- 
-      </>
+
+
+<div className="flex mt-[69px] gap-[8px] absolute w-[1680px] *:cursor-pointer">
+            {[...appliedDepartments,...appliedPriorities, ...(appliedEmployee ? [appliedEmployee + ` ${employees.find(employee => employee.name === appliedEmployee)?.surname}`] : [])].map((tag) => {
+                return(
+                    <button className="flex h-[29px] gap-[4px] px-[10px] py-[6px]  border-[1px] bg-[#FFFFFF] border-[#CED4DA] rounded-[43px]"
+                    onClick={() => handleTagClick(tag)}
+                    >
+                        <span className={`text-[14px] text-[#343A40] text-center}
+                        ${appliedDepartments.length > 3 && (appliedEmployee && !tag.includes(appliedEmployee))  ? 'max-w-[100px] truncate' : ''}
+                        `}>{tag}</span>
+                        <svg className="" width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.5 4L3.5 11" stroke="#343A40" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M3.5 4L10.5 11" stroke="#343A40" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+                         </button>
+                 )
+            })}
+            <button onClick={handleAllTagClick} className="text-[14px] text-center text-[#343A40] px-[10px] py-[6px] rounded-[43px] bg-[#FFFFFF]">გასუფთავება</button>
+        </div>
+      </div>
   );
 };
 
