@@ -1,14 +1,18 @@
 // import Icon from '@/assets/Icon.svg'
 
 import { Checkbox } from "@/components/ui/checkbox";
+import { useGetDepartments } from "@/reactQuery/query/departments";
 import { useState } from "react";
 
 type options =  "თანამშრომელი" | "პრიორიტეტი" | "დეპარტამენტი" | "none"
   
 const CustomSelect = () => {
+
+
     const [selectedOption, setSelectedOption] =useState<options>();
-    
-    const handleButtonClick = (option: options) => (e: React.MouseEvent) => {
+        const{data:departments = [], isLoading} =   useGetDepartments();
+  
+       const handleButtonClick = (option: options) => (e: React.MouseEvent) => {
         e.stopPropagation(); // Stop the event from bubbling up
         
         // Toggle the dropdown - close if already open, open if closed
@@ -49,42 +53,30 @@ const CustomSelect = () => {
 
       </button>
       {selectedOption == "დეპარტამენტი" && 
-<form className={`flex flex-col w-full pt-[40px] px-[30px] pb-[20px] absolute border-[0.5px] border-[#8338EC] top-[55px] rounded-[10px] h-[274px] gap-[25px]`} onClick={(e) => e.stopPropagation()}>
-  <div className="flex flex-col gap-[22px] items-start max-w-fit *:flex *:gap-[15px] *:items-center **:cursor-pointer">
+<form className={`flex flex-col w-full pt-[40px] px-[30px] pb-[20px] absolute border-[0.5px] border-[#8338EC] top-[55px] rounded-[10px] max-h-[275px] gap-[25px] bg-[#FFFF]`} onClick={(e) => e.stopPropagation()}>
     
-    <label
-        htmlFor="department"
+<div className="flex flex-col gap-[22px] items-start max-w-fit *:flex *:gap-[15px] overflow-auto *:items-center **:cursor-pointer"  style={{
+          scrollbarWidth: "thin",
+          scrollbarColor: "#8338EC #ffffff",
+          msOverflowStyle: "none",
+          WebkitOverflowScrolling: "touch",
+          paddingRight: "16px",
+        }}>
+    {departments.map((department) =>{
+        return(
+            
+<label
+        htmlFor={department.name}
       >
-    <Checkbox id="department" checkmarkColor="stroke-[#FD9A6A]" className="border-[#FD9A6A]" />
+    <Checkbox id={department.name} checkmarkColor="stroke-[#000000]" className="border-[#000000]" />
     
-        მარკეტინგის დეპარტამენტი
+       {department.name}
       </label>
   
-      <label
-        htmlFor="Design"
-      >
-  <Checkbox id="Design" checkmarkColor="stroke-[#FF66A8]" className="border-[#FF66A8]" />
-     
-        დიზაინის დეპარტამენტი
-      </label>
-
-      <label
-        htmlFor="Logistics"
-      >
-  <Checkbox id="Logistics" checkmarkColor="stroke-[#89B6FF]" className="border-[#89B6FF]" />
-     
-       ლოჯისტიკის დეპარტამენტი
-      </label>
-
-      <label
-        htmlFor="IT"
-      >
-  <Checkbox id="IT" checkmarkColor="stroke-[#FFD86D]" className="border-[#FFD86D]" />
-      
-        IT დეპარტამენტი
-      </label>
-  
-  </div>
+        )
+    })}
+      </div>
+    
   <div className="w-full flex justify-end">
  <button className="py-[9px] px-[20px] bg-[#8338EC]  rounded-[20px] text-[#FFFFFF] w-[155px] cursor-pointer" onClick={(e) =>{e.preventDefault()}}>არჩევა</button>
  </div>

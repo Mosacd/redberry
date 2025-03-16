@@ -2,7 +2,17 @@
 import logo from '@/assets/Frame 1000006027.svg'
 import add from '@/assets/add.svg'
 import CustomSelect from './customElements/select'
+import { useGetStatuses } from './reactQuery/query/statuses';
 function App() {
+
+    const{data:statuses = [], isLoading} = useGetStatuses();
+  
+   
+      const colors = ['#F7BC30', '#FB5607', '#FF006E', '#3A86FF'];
+
+    // if(isLoading){
+    //   return(<h1>Loading...</h1>)
+    // }
 
   return (
     <>
@@ -27,7 +37,21 @@ function App() {
 
        </div>
 
+    <div className='w-full flex justify-center gap-[52px] mt-[79px]'>
+    {statuses?.map((status, index) => {
+        return(   <div className={`flex justify-center items-center py-[15px] h-[54px] w-[381px] rounded-[10px] gap-[10px] flex-shrink-0`}
+          style={{ backgroundColor: colors[index] }}
+        >
+          <h2 className='text-[20px] font-[500] text-[#FFFFFF]'>{status.name}</h2>
+      </div>
+   )
+   
+    })}
+
     </div>
+    
+    </div>
+
     </>
   )
 }
