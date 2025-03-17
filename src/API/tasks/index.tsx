@@ -34,6 +34,21 @@ export const getSingleTask = async (id:number) : Promise<Task>=> {
   });
 }
 
+export const putTaskStatus = async (data: {id:number, statusId:number}): Promise<void> => {
+   await httpClient.put(`/tasks/${data.id}`,
+    { 
+      status_id: data.statusId
+  },
+    {
+      headers: {
+        Authorization: `Bearer ${personalToken}`,
+      }
+    }).catch((error) => {
+      console.error("Error Updating Task Status:", error);
+      throw error;
+  });
+}
+
 export type Task = {
     id: number,
     name: string,
