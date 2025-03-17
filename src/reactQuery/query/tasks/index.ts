@@ -1,4 +1,4 @@
-import { getTasks, Task } from "@/API/tasks";
+import { getSingleTask, getTasks, Task } from "@/API/tasks";
 import { useQuery, UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 
 export const useGetTasks= <T = Task[]>(
@@ -17,4 +17,24 @@ export const useGetTasks= <T = Task[]>(
   };
 
 
+  export const useSingleGetTask= <T = Task>(
+    {
+      queryOptions,
+      id
+    }: {
+      queryOptions?: Omit<UseQueryOptions<Task, Error, T>, "queryKey">;
+      id?: number
+    } = {},
+   
+  ): UseQueryResult<T, Error> => {
+    if (!id) {
+      throw new Error("ID is required to fetch a task");
+    }
+    return useQuery<Task, Error, T>({
+      queryKey: ["tasks", id],
+      queryFn: () =>  getSingleTask(id),
+      staleTime: 60 * 1000,
+      ...queryOptions,
+    });
+  };
 

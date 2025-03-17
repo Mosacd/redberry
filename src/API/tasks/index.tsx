@@ -19,6 +19,21 @@ export const getTasks = async () : Promise<Task[]>=> {
     });
 }
 
+
+export const getSingleTask = async (id:number) : Promise<Task>=> {
+  return httpClient.get(`/tasks/${id}`, {
+      headers: {
+        Authorization: `Bearer ${personalToken}`,
+      },
+    }).then((res) => { 
+      console.log(res.data)
+      return res.data})
+  .catch((error) => {
+    console.error("Error Fetching Tasks:", error);
+    throw error;
+  });
+}
+
 export type Task = {
     id: number,
     name: string,

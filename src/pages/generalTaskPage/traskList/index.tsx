@@ -3,6 +3,7 @@ import { useGetStatuses } from "@/reactQuery/query/statuses";
 import { useGetTasks } from "@/reactQuery/query/tasks";
 import dayjs from "dayjs";
 import "dayjs/locale/ka";
+import { Link } from "react-router-dom";
 
 const formattedDate = (due_at:string) => {
     return  dayjs(due_at)
@@ -45,7 +46,7 @@ const TaskList:React.FC<{appliedDepartments:string[], appliedPriorities: string[
          
         return( 
         
-        
+        <Link to={`/taskPage/${task.id}`}>
         <div key={task.id} className={`flex flex-col justify-between items-center w-[381px] h-[217px] p-[20px] gap-[28px] rounded-[15px] hover:cursor-pointer transition-all duration-300 ease-in-out]`}
             style={{ boxShadow: `0 0 0 1px ${colorsProgress[index]}` }}
           onMouseEnter={(e) => e.currentTarget.style.boxShadow = `0 0 0 2px ${colorsProgress[index]}`}
@@ -84,7 +85,9 @@ const TaskList:React.FC<{appliedDepartments:string[], appliedPriorities: string[
               <p className='text-[14px] text-[#212529]'>{task.total_comments}</p>
             </div>
           </div>
-          </div>)
+          </div>
+          </Link>
+          )
         }))}
          
             
