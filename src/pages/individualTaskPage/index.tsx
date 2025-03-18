@@ -5,6 +5,9 @@ import { useSingleGetTask } from "@/reactQuery/query/tasks";
 import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import "dayjs/locale/ka";
+import { usePostComment } from "@/reactQuery/mutation/comments";
+import { FormEvent, useRef } from "react";
+import { useGetComments } from "@/reactQuery/query/comments";
 
 const formattedDate = (due_at:string) => {
     return  dayjs(due_at)
@@ -18,42 +21,54 @@ const TaskPage = () => {
     const { id } = useParams();
    
     const taskId = Number(id);
+    const commentRef = useRef<HTMLTextAreaElement | null>(null);
 
     
     const {data:task} = useSingleGetTask({id:taskId});
     const {data:status} = useGetStatuses();
+    const {data:comments} = useGetComments({taskId:taskId});
 
      const {mutate:putStatus } = usePutTaskStatus();
+     const {mutate:postComment } = usePostComment();
+ 
 
      const changeStatus = (id:number, statusId:number) => {
-      
       putStatus({id, statusId})
      }
+
+    
+     const createComment = (e:FormEvent) => {
+      e.preventDefault();
+      postComment({taskId:taskId, text: commentRef.current?.value || ""})
+     }
+
+  
 
     const colorsPriority = ['#08A508','#FFBE0B','#FA4D4D'];
     const colorsDepartment = ["#FF66A8", "#FD9A6A", "#FFD86D", "#89B6FF", "#5FAA5B", "#D288C5", "#A3A65D"];
 
     return(
-        <div className='px-[121px]'>
+        <div className='px-[121px] mt-[40px]'>
           {task &&  
-          <>
-          <div className="flex flex-col gap-[26px] max-w-[715px]">
-          <div className="flex flex-col gap-[12px]">
+          <div className="flex w-full gap-[223px] justify-between">
+          <div >
+          <div className="flex flex-col gap-[26px] w-full max-w-[715px]">
+          <div className="flex flex-col gap-[12px] h-[105px] justify-center">
           <div className="flex  items-center gap-[18px]">
-                <div className="flex w-[106px] px-[5px] py-[4px] gap-[4px] border-[0.5px] rounded-[3px] bg-[#FFFFFF] text-[16px] leaing-[150%] font-[600]"
+                <div className="flex items-center w-[106px] px-[5px] py-[4px] gap-[4px] border-[0.5px] rounded-[3px] bg-[#FFFFFF] text-[16px] leaing-[150%] font-[600]"
                 style={{
                     borderColor: colorsPriority[task?.priority.id-1],
                     color: colorsPriority[task?.priority.id-1],
                   }}
                 ><img src={task?.priority.icon} alt="" className="w-[18px] h-[20px]"/> {task?.priority.name}</div>
-               <div className="text-[#FFFFFF] px-[10px] py-[5px] rounded-[15px] h-[29px]"  style={{
+               <div className="text-[#FFFFFF] flex items-center px-[10px] py-[5px] rounded-[15px] h-[29px]"  style={{
                     backgroundColor: colorsDepartment[task?.department.id-1],
                   }}
                   >{task?.department.name}</div>
             </div>
             <h1 className="flex items-center font-[600] text-[34px] text-[#212529] w-fit h-[41px]">{task?.name}</h1>
             </div>
-            <p className="text-[18px] leading-[150%] text-[#000000] w-fit">{task?.description}</p>
+            <p className="text-[18px] leading-[150%] text-[#000000] w-fit">მიზანია რომ შეიქმნას თანამედროვე, სუფთა და ფუნქციონალური დიზაინი, რომელიც უზრუნველყოფს მარტივ ნავიგაციას და მკაფიო ინფორმაციის გადაცემას. დიზაინი უნდა იყოს ადაპტირებადი (responsive), გამორჩეული ვიზუალით, მინიმალისტური სტილით და ნათელი ტიპოგრაფიით.</p>
             </div>
 
             <div className="flex flex-col gap-[18px] w-fit mt-[63px] h-[277px]">
@@ -91,7 +106,7 @@ const TaskPage = () => {
 <p className="leading-[150%] text-[#474747]">თანამშრომელი</p>
                     </div>
                     <div className="h-[41px] flex items-end relative">
-                      <p className="absolute text-[11px] font-[300px] text-[#474747] text-nowrap right-[-104px] top-[4px]">{task.employee.department.name}</p>
+                      <p className="absolute text-[11px] font-[300] text-[#474747] text-nowrap right-[-103px] top-[2px]">{task.employee.department.name}</p>
                      <div className="flex gap-[12px] h-[32px] items-center">
                       <img src={task.employee.avatar} alt="" className="w-[32px] h-[32px]"/>
                       <p className="text-[14px] leading-[150%] text-[#0D0F10]">{task.employee.name} {task.employee.surname}</p>
@@ -113,7 +128,94 @@ const TaskPage = () => {
                   </div>
                 </div>
             </div>
-            </>
+          
+            </div>
+            <div className="flex flex-col min-h-[975px] py-10 mt-[59px] mb-[59px] gap-[66px] bg-[#F8F3FEA6] border-transparent border-[0.3px] rounded-[10px] w-[741px] items-center"
+            style={{ 
+              boxShadow: '0 0 0 0.2px #ADB5BD'
+            }}
+            >
+                 
+            <form onSubmit={createComment} className="w-[651px] h-[135px] rounded-[10px] border-transparent bg-[#FFFFFF] pt-[18px] pb-[15px] px-[20px] border-[0.3px] flex flex-col justify-between max-h-[135px]"
+            style={{ 
+               boxShadow: '0 0 0 0.2px #ADB5BD'
+            }}
+            >
+      <textarea
+        ref={commentRef}
+        placeholder="დაწერე კომენტარი"
+        className="w-full border-none focus:outline-none resize-none py-[10px] h-full text-[14px] font-[400] font-[FiraGO] leading-[100%]"
+      />
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          className="bg-[#8338EC] h-[35px]  text-white px-[20px] py-[8px] rounded-[20px] cursor-pointer"
+          
+        >
+          დააკომენტარე
+        </button>
+      </div>
+    </form>
+    <div className="flex flex-col items-start w-[651px] gap-[40px]">
+      <div className="flex gap-[7px] items-center "> {/* comment title */}
+      <h1 className="text-[20px] font-[500]">კომენტარები</h1>
+      <p className="p-[10px] rounded-[30px] h-[22px] w-[30px] justify-center text-[14px] font-[500] items-center flex text-white bg-[#8338EC]">{comments?.length}</p>
+      </div> {/* comment title end*/}
+      <div className="gap-[38px] flex flex-col">  {/* actual comments section div */}
+        {comments?.map((comment) => {
+          return(
+              <div key={comment.id}> {/* comments/subcomments div */}
+                <div className="flex items-start gap-[12px]"> {/* comment div */}
+                    <img src={comment.author_avatar} alt="" className="w-[38px] h-[38px] rounded-full"/>
+                    
+                    <div className="flex flex-col gap-[10px]">
+                      <div className="flex flex-col gap-[8px]">
+                      <p className="font-[500] text-[18px] h-[22px] text-[#212529]">{comment.author_nickname}</p>
+                      <p className="font-[350] text-[16px] text-[#343A40]">{comment.text}</p>
+                      </div>
+                      <button className="flex hover:cursor-pointer items-center gap-[6px] py-[6px] h-[26px] w-[67px] group">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_9228_1684)">
+    <path className="group-hover:fill-[#B588F4]" d="M16.0007 13.9993H14.6673V11.9993C14.6673 8.66602 12.0007 5.99935 8.66732 5.99935H5.33398V4.66602H8.66732C12.734 4.66602 16.0007 7.93268 16.0007 11.9993V13.9993Z" fill="#8338EC"/>
+    <path className="group-hover:fill-[#B588F4]" d="M2 5.33333L5.33333 8.66667V2L2 5.33333Z" fill="#8338EC"/>
+    </g>
+    <defs>
+    <clipPath id="clip0_9228_1684">
+    <rect width="16" height="16" fill="white"/>
+    </clipPath>
+    </defs>
+    </svg>
+
+                        <span className="text-[12px] text-[#8338EC] group-hover:text-[#B588F4]">უპასუხე</span>
+                      </button>
+                    </div>
+                </div>
+                <div>
+                {comment.sub_comments.map((subcomment) => {
+                  return(
+                    <div key={subcomment.id} className={`ml-[53px] flex items-start gap-[12px] mt-[19px] ${comment.sub_comments[comment.sub_comments.length-1] == subcomment ? "mb-[19px]" : ""}`}>
+                      <img src={subcomment.author_avatar} alt={subcomment.author_nickname} className="w-[38px] h-[38px] rounded-full"/>
+                      <div className="flex flex-col gap-[8px]">
+                      <p className="font-[500] text-[18px] h-[22px] text-[#021526]">{subcomment.author_nickname}</p>
+                      <p className="font-[400] text-[16px] text-[#343A40]">{subcomment.text}</p>
+                      </div>
+                    </div>
+                  )
+                })
+                
+                }
+                </div>
+             
+          </div>
+          )
+        })}
+          
+      </div> {/* actual comments section end */}
+    </div>
+    </div>  
+            </div>
+           
+           
 }
         </div>
     )

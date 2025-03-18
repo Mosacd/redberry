@@ -6,6 +6,15 @@
 
 /* Additional reset rules */
 
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
 @layer base {
   * {
     margin: 0;
@@ -13,6 +22,7 @@
     box-sizing: border-box;
   }
 
+ 
 
 h1,h2,h3,p,label,div,span {
 font-family:FiraGo; 
@@ -23,6 +33,7 @@ font-size: 16px;
 }
 
 }
+
 
 /* :root {
   --radius: 0.625rem;
