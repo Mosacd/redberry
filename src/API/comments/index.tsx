@@ -1,14 +1,15 @@
 import { httpClient, personalToken } from "..";
 
-export const postComment = async (data: {taskId:number, text:string}): Promise<void> => {
-   if(data.text == ""){
-    console.log(data.text)
-    throw new Error("Text cannot be empty");
-   }
+export const postComment = async (data: {taskId:number, parentId: number | null, text:string}): Promise<void> => {
+    // if (data.text.trim().length === 0) {
+    //     console.log("Text is empty after trimming:", data.text);
+    //     throw new Error("Text cannot be empty");
+    //   }
    
     await httpClient.post(`/tasks/${data.taskId}/comments`,
     { 
-        text: data.text
+        text: data.text,
+        parent_id:data.parentId
   },
     {
       headers: {

@@ -15,17 +15,19 @@
   display: none;
 }
 
+
+
 @layer base {
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: firaGO;
+    line-height: 100%;
   }
 
- 
 
-h1,h2,h3,p,label,div,span {
-font-family:FiraGo; 
+h1,h2,h3,p,label,div,span,button,textarea {
 font-weight: 400;
 line-height: 100%;
 letter-spacing: 0%;

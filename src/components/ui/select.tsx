@@ -19,7 +19,7 @@ function SelectGroup({
 function SelectValue({
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Value>) {
-  return <SelectPrimitive.Value className="text-[14px] font-[300] text-[#0D0F10]" data-slot="select-value" {...props} />
+  return <SelectPrimitive.Value data-slot="select-value" {...props} />
 }
 
 function SelectTrigger({
@@ -65,7 +65,7 @@ function SelectContent({
       <SelectPrimitive.Content
         data-slot="select-content"
         className={cn(
-          "relative  z-50 overflow-x-hidden overflow-y-auto w-[259px] rounded-[5px] rounded-t-[0px] border-[1px] bg-[#FFFFFF] border-[#DEE2E6] border-t-white ",
+          "relative z-50 overflow-x-hidden overflow-y-auto w-[259px] rounded-[5px] rounded-t-[0px] border-[1px] bg-[#FFFFFF] border-[#DEE2E6] border-t-white ",
           className
         )}
         position={position}

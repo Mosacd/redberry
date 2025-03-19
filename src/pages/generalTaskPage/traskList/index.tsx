@@ -16,7 +16,13 @@ const TaskList:React.FC<{appliedDepartments:string[], appliedPriorities: string[
 
     const{data:statuses = [],} = useGetStatuses();
         
-    const {data:tasks = [],} = useGetTasks();
+    const {data:tasks = [], isLoading} = useGetTasks();
+
+    if(isLoading){
+      return
+    }
+
+    console.log(tasks[0].total_comments)
 
       const colorsProgress = ['#F7BC30', '#FB5607', '#FF006E', '#3A86FF'];
       const colorsPriority = ['#08A508','#FFBE0B','#FA4D4D'];
@@ -30,6 +36,7 @@ const TaskList:React.FC<{appliedDepartments:string[], appliedPriorities: string[
         return matchesDepartment && matchesPriority && matchesEmployee;
     });
 
+    
     return(
     <div className='w-[1680px] flex justify-center gap-[52px] mt-[79px]'>
         {statuses?.map((status, index) => {

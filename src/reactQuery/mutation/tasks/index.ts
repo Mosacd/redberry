@@ -20,6 +20,10 @@ export const usePutTaskStatus = () => {
             queryKey: ['tasks', id],
             exact: true,
           });
+          queryClient.invalidateQueries({
+            queryKey: ['tasks'],
+            exact: true,
+          });
       },
       onError: (error: Error) => {
         console.error('Error Updating Status:', error);

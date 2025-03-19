@@ -10,7 +10,7 @@ export const usePostComment = () => {
     return useMutation<
       void,
       Error,
-      { taskId: number; text: string }
+      { taskId: number; parentId: number | null; text: string }
     >({
       mutationKey: ['commentPost'],
       mutationFn: postComment, 
