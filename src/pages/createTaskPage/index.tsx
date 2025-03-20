@@ -287,7 +287,7 @@ const CreateTaskPage = () => {
                     დედლაინი
                     </label> 
              <div className="group">     
-        <div className="flex  w-[318px] items-center rounded-[5px] border-[1px] h-[45px] gap-[6px] p-[14px] group-focus-within:border-[#8338EC] bg-[#FFFFFF] border-[#DEE2E6]">
+        <div className={`flex  w-[318px] items-center rounded-[5px] border-[1px] h-[45px] gap-[6px] p-[14px] group-focus-within:border-[#8338EC] bg-[#FFFFFF] border-[#DEE2E6]   ${ deadline !== null && (deadline !== null && deadline < new Date() ? '!border-[#FA4D4D]': '!border-[#08A508]') }`}>
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M5.00065 0.167969V1.5013H9.00065V0.167969H10.334V1.5013H13.0007C13.3689 1.5013 13.6673 1.79978 13.6673 2.16797V12.8346C13.6673 13.2028 13.3689 13.5013 13.0007 13.5013H1.00065C0.632464 13.5013 0.333984 13.2028 0.333984 12.8346V2.16797C0.333984 1.79978 0.632464 1.5013 1.00065 1.5013H3.66732V0.167969H5.00065ZM12.334 6.83463H1.66732V12.168H12.334V6.83463ZM3.66732 2.83464H1.66732V5.5013H12.334V2.83464H10.334V4.16797H9.00065V2.83464H5.00065V4.16797H3.66732V2.83464Z" fill="#4D596A"/>
 </svg>
@@ -299,10 +299,7 @@ const CreateTaskPage = () => {
           onChange={(date) =>  setDeadline(date)}
           dateFormat="dd.MM.yyyy"
           placeholderText="DD/MM/YYY"
-          className={`relative group outline-none w-full text-[14px] font-[300], leading-[20px], leading-[-1.25%] text-[#0D0F10]
-            ${deadline !== null && deadline < new Date() ? 'border-[#FA4D4D]': 'border-[#08A508]' }
-            `}
-      
+          className="relative group outline-none w-full text-[14px] font-[300] leading-[-1.25%] text-[#0D0F10]"
           locale={ka}
         />
         

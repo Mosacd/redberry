@@ -231,7 +231,7 @@ const TaskPage = () => {
                      
                     </div>
                 </div>
-                {comment.id == commentID && <form onSubmit={(e) => createSubComment(e,comment.id)} className="h-[135px] w-full mt-4 z-50 rounded-[10px] border-transparent bg-[#FFFFFF] pt-[18px] pb-[15px] px-[20px] border-[0.3px] flex flex-col justify-between max-h-[135px]"
+                {comment.id == commentID && <form onSubmit={(e) => createSubComment(e,comment.id)} className="h-[135px] w-[651px] mt-4 z-50 rounded-[10px] border-transparent bg-[#FFFFFF] pt-[18px] pb-[15px] px-[20px] border-[0.3px] flex flex-col justify-between max-h-[135px]"
             style={{ 
                boxShadow: '0 0 0 0.2px #ADB5BD',
               //  position: 'absolute',
