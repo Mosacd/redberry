@@ -185,7 +185,7 @@ const TaskPage = () => {
       <div className="flex justify-end">
         <button
           type="submit"
-          className="bg-[#8338EC] h-[35px] text-white px-[20px] py-[8px] rounded-[20px] cursor-pointer"
+          className="bg-[#8338EC] hover:bg-[#B588F4] h-[35px] text-white px-[20px] py-[8px] rounded-[20px] cursor-pointer"
           
         >
           დააკომენტარე

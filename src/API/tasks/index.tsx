@@ -49,6 +49,29 @@ export const putTaskStatus = async (data: {id:number, statusId:number}): Promise
   });
 }
 
+export const postTask = async (data: {name:string, description:string, due_date:string, status_id:number, employee_id:number, priority_id:number}): Promise<void> => {
+  await httpClient.post(`/tasks`,
+   { 
+     name: data.name,
+     description: data.description,
+     due_date: data.due_date,
+     status_id: data.status_id,
+     employee_id: data.employee_id,
+     priority_id: data.priority_id
+ },
+   {
+     headers: {
+       Authorization: `Bearer ${personalToken}`,
+     }
+   }).catch((error) => {
+     console.error("Error Updating Task Status:", error);
+     throw error;
+ });
+}
+
+
+
+
 
 
 export type Task = {

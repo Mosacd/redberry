@@ -35,7 +35,7 @@ function SelectTrigger({
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        "group cursor-pointer text-[#0D0F10] flex w-fit bg-[#FFFFFF] border-[#CED4DA] data-[state=open]:border-b-[white] data-[state=open]:rounded-b-[0px] items-center justify-between whitespace-nowrap disabled:cursor-not-allowed disabled:opacity-50 outline-none focus:outline-none focus-visible:outline-none",
+        "group cursor-pointer text-[#0D0F10] flex w-fit bg-[#FFFFFF] border-[#CED4DA] data-[state=open]:border-[#8338EC] data-[state=open]:border-b-[white] data-[state=open]:rounded-b-[0px] items-center justify-between whitespace-nowrap disabled:cursor-not-allowed disabled:opacity-50 outline-none focus:outline-none focus-visible:outline-none",
         className
       )}
       {...props}
@@ -65,7 +65,7 @@ function SelectContent({
       <SelectPrimitive.Content
         data-slot="select-content"
         className={cn(
-          "relative z-50 overflow-x-hidden overflow-y-auto w-[259px] rounded-[5px] rounded-t-[0px] border-[1px] bg-[#FFFFFF] border-[#DEE2E6] border-t-white ",
+          "relative z-50 overflow-x-hidden overflow-y-auto w-[259px] rounded-[5px] rounded-t-[0px] border-[1px] bg-[#FFFFFF] border-[#DEE2E6] data-[state=open]:border-[#8338EC] data-[state=open]:border-t-white border-t-white  ",
           className
         )}
         position={position}
@@ -112,7 +112,7 @@ function SelectItem({
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
-        "relative text-[14px] text-[#0D0F10] leading-[100%] font-[300] flex justify-start w-full cursor-pointer items-center outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 h-[45px] p-[14px] pl-[11px]",
+        "relative text-[14px] hover:bg-[#F8F9FA] text-[#0D0F10] leading-[100%] font-[300] flex justify-start w-full cursor-pointer items-center outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 h-[45px] p-[14px] pl-[11px]",
         
         className
       )}
