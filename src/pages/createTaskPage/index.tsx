@@ -4,8 +4,16 @@ import { useGetEmployees } from "@/reactQuery/query/employees";
 import { useGetPriorities } from "@/reactQuery/query/priorities";
 import { useGetStatuses } from "@/reactQuery/query/statuses";
 
+import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import {ka} from "date-fns/locale/ka";
+
+import "./datepicker.css";
+
 const CreateTaskPage = () => {
 
+  const [selectedDate, setSelectedDate] = useState< Date | null >(null);
         const{data:departments = [], isLoading:isLoadingDep } =   useGetDepartments();
         const{data:employees = [], isLoading:isLodingEmp } =   useGetEmployees();
         const{data:priorities = [], isLoading:isLodingPri} =   useGetPriorities();
@@ -16,11 +24,11 @@ if(isLoadingDep || isLodingEmp || isLodingPri || isLodingSta){
 }
 
     return(
-        <div className='px-[118px] mt-[40px]'>
+        <div className='px-[118px] my-[40px]'>
             <h1 className="h-[41px] flex items-center font-[600] text-[34px] text-[#212529] leading-[100%]">შექმენი ახალი დავალება</h1>
-            <div className="mt-[25px] border-[0.3px] w-full bg-[#FBF9FFA6] rounded-[4px] pl-[55px] pt-[65px] border-[#DDD2FF]">
+            <div className="mt-[25px] border-[0.3px] w-full bg-[#FBF9FFA6] rounded-[4px] pl-[55px] py-[65px] border-[#DDD2FF]">
                 <form action="">
-                  <div className="flex flex-col gap-[61px]">
+                  <div className="flex flex-col gap-[61px] w-[1261px]">
                     <div className="flex gap-[161px]"> {/*first section*/}
                   <div className="flex flex-col"> {/*title field Start*/}
                     <label className="py-[6px] flex text-[16px] text-[#343A40]" htmlFor="title">
@@ -41,9 +49,9 @@ if(isLoadingDep || isLodingEmp || isLodingPri || isLodingSta){
 </svg>
 </label> 
                     {/* onValueChange={(value) => changeStatus(taskId, Number(value))} */}
-                    <Select  defaultValue={departments[0].id.toString()}>
-                  <SelectTrigger  className="font-[300] w-[550px] h-[45px] rounded-[5px] border-[1px] p-[14px] gap-[6px]">
-                    <SelectValue />
+                    <Select>
+                  <SelectTrigger  className="w-[550px] h-[45px] rounded-[5px] border-[1px] p-[14px] gap-[6px]">
+                    <SelectValue placeholder = {<span className="font-[300] text-[#0D0F10] text-[14px]">აირჩიე დეპარტამენტი</span>}></ SelectValue>
                   </SelectTrigger>
                   <SelectContent className="font-[300] w-[550px]">
                     {departments?.map((department) => <SelectItem value={department.id.toString()}>
@@ -80,15 +88,15 @@ if(isLoadingDep || isLodingEmp || isLodingPri || isLodingSta){
 </svg>
 </label> 
                     {/* onValueChange={(value) => changeStatus(taskId, Number(value))} */}
-                    <Select  defaultValue={employees[0].id.toString()}>
+                    <Select>
                   <SelectTrigger  className="font-[300] w-[550px] h-[45px] rounded-[5px] border-[1px] p-[14px] gap-[6px]">
-                    <SelectValue />
+                    <SelectValue placeholder={<span className="font-[300] text-[#0D0F10] text-[14px]">აირჩიე თანამშრომელი</span>}/>
                   </SelectTrigger>
                   <SelectContent className="font-[300] w-[550px]">
                     {employees?.map((employee) => <SelectItem className="font-[300]" value={employee.id.toString()}>
                    <div className="flex items-center gap-[10px]">
                       <img className="w-[30px] h-[30px]" src={employee.avatar} alt="" />
-                      <span className="text-[#0D0F10] font-[300] text-[14px]">{employee.name}</span>
+                      <span className="text-[#0D0F10] font-[300] text-[14px]">{employee.name} {employee.surname}</span>
                       </div>
                       </SelectItem>)}
                     
@@ -99,12 +107,12 @@ if(isLoadingDep || isLodingEmp || isLodingPri || isLodingSta){
                  </div> {/*Second section End*/}
 
                  <div  className="flex gap-[161px]"> {/*Third section Start*/}
-                 <div className="flex w-[550px] gap-[32px] h-[77px]"> {/*description field Start*/}
-                  <div className="flex flex-col">
+                 <div className="flex w-[550px] gap-[32px] h-[77px]"> 
+                  <div className="flex flex-col"> {/*priority field Start*/}
                     <label className="py-[6px] flex text-[16px] text-[#343A40]" htmlFor="title">
                     პრიორიტეტი*
                     </label> 
-                    <Select  defaultValue={priorities[0].id.toString()}>
+                    <Select  defaultValue={priorities[1].id.toString()}>
                   <SelectTrigger  className="font-[300] w-[259px] h-[45px] rounded-[5px] border-[1px] p-[14px] gap-[6px]">
                     <SelectValue />
                   </SelectTrigger>
@@ -118,8 +126,8 @@ if(isLoadingDep || isLodingEmp || isLodingPri || isLodingSta){
                     
                   </SelectContent>
                 </Select>
-                    </div>
-                    <div className="flex flex-col">
+                    </div> {/*priority field End*/}
+                    <div className="flex flex-col"> {/*status field start*/}
                     <label className="py-[6px] flex text-[16px] text-[#343A40]" htmlFor="title">
                     სტატუსი*
                     </label> 
@@ -136,11 +144,39 @@ if(isLoadingDep || isLodingEmp || isLodingPri || isLodingSta){
                     
                   </SelectContent>
                 </Select>
-                    </div>
+                    </div> {/*status field End*/}
                   </div>
-                 </div> {/*Third section End*/}
+                  <div className="flex flex-col"> {/*status field start*/}
+                    <label className="py-[6px] flex text-[16px] text-[#343A40]" htmlFor="title">
+                    დედლაინი
+                    </label> 
+                    
+        <div className="flex w-[318px] items-center rounded-[5px] border-[1px] h-[45px] gap-[6px] p-[14px] bg-[#FFFFFF] border-[#DEE2E6]">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.00065 0.167969V1.5013H9.00065V0.167969H10.334V1.5013H13.0007C13.3689 1.5013 13.6673 1.79978 13.6673 2.16797V12.8346C13.6673 13.2028 13.3689 13.5013 13.0007 13.5013H1.00065C0.632464 13.5013 0.333984 13.2028 0.333984 12.8346V2.16797C0.333984 1.79978 0.632464 1.5013 1.00065 1.5013H3.66732V0.167969H5.00065ZM12.334 6.83463H1.66732V12.168H12.334V6.83463ZM3.66732 2.83464H1.66732V5.5013H12.334V2.83464H10.334V4.16797H9.00065V2.83464H5.00065V4.16797H3.66732V2.83464Z" fill="#4D596A"/>
+</svg>
 
+
+        <DatePicker
+          selected={selectedDate}
+          onChange={(date) => setSelectedDate(date)}
+          dateFormat="dd.MM.yyyy"
+          placeholderText="DD/MM/YYY"
+          className="outline-none w-full text-[14px] font-[300], leading-[20px], leading-[-1.25%] text-[#0D0F10]"
+          wrapperClassName="w-[318px]"
+          locale={ka}
+        />
+        
+        
+      </div>
+      </div>
+                  
+                 </div> {/*Third section End*/}
                  </div>
+                 
+<div className="flex mt-[147px] justify-end  w-[1261px]">
+      <button className="rounded-[5px] w-[208px] h-[42px] px-[20px] py-[10px] bg-[#8338EC] text-[white] cursor-pointer text-[18px] ">დავალების შექმნა</button>
+</div>
                 </form>
             </div>
         </div>

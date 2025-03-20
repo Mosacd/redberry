@@ -36,6 +36,25 @@ font-size: 16px;
 
 }
 
+/* .react-datepicker {
+  @apply bg-white rounded-md shadow-lg border border-[#DDD2FF];
+}
+
+.react-datepicker__header {
+  @apply bg-[#FBF9FFA6] border-b border-[#DDD2FF];
+}
+
+.react-datepicker__day--selected {
+  @apply bg-[#8338EC] text-white rounded-full;
+}
+
+.react-datepicker__day:hover {
+  @apply bg-[#DDD2FF] rounded-full;
+}
+
+.react-datepicker__day--keyboard-selected {
+  @apply bg-[#8338EC] text-white rounded-full;
+} */
 
 /* :root {
   --radius: 0.625rem;
