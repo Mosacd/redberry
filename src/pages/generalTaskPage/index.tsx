@@ -15,7 +15,7 @@ const GeneralTaskPage = () => {
     };
 
     const getStringFromParams = (key: string): string | null => {
-        return searchParams.get(key);
+        return searchParams.get(key) ?? null;
     };
 
     const [appliedDepartments, setAppliedDepartments] = useState<string[]>(() => getArrayFromParams("departments"));

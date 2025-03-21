@@ -17,9 +17,15 @@ const CustomSelect:React.FC<{setAppliedDepartments: Dispatch<SetStateAction<stri
  ) => {
 console.log("mawoni")
     const [selectedOption, setSelectedOption] =useState<Options>(null);
-        const{data:departments = [], } =   useGetDepartments();
+     
+    const{data:departments = [], } =   useGetDepartments();
         const{data:employees = [], } = useGetEmployees();
         const{data:priorities = [], } = useGetPriorities();
+
+        if (!Array.isArray(departments)) console.error("Expected an array for departments:", departments);
+if (!Array.isArray(priorities)) console.error("Expected an array for priorities:", priorities);
+if (!Array.isArray(employees)) console.error("Expected an array for employees:", employees);
+
         const colorsDepartment = ["#FF66A8", "#FD9A6A", "#FFD86D", "#89B6FF", "#5FAA5B", "#D288C5", "#A3A65D"];
 
         const [selectedDepartments, setSelectedDepartments] = useState<string[]>(appliedDepartments);
