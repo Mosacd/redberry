@@ -18,8 +18,8 @@ const GeneralTaskPage = () => {
         return searchParams.get(key) ?? null;
     };
 
-    const [appliedDepartments, setAppliedDepartments] = useState<string[]>(() => getArrayFromParams("departments"));
-    const [appliedPriorities, setAppliedPriorities] = useState<string[]>(() => getArrayFromParams("priorities"));
+    const [appliedDepartments, setAppliedDepartments] = useState<string[]>(() => getArrayFromParams("departments")||[]);
+    const [appliedPriorities, setAppliedPriorities] = useState<string[]>(() => getArrayFromParams("priorities")||[]);
     const [appliedEmployee, setAppliedEmployee] = useState<string | null>(() => getStringFromParams("employee"));
  
 
