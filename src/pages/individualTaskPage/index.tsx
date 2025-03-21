@@ -142,10 +142,12 @@ const TaskPage = () => {
 <p className="leading-[150%] text-[#474747]">თანამშრომელი</p>
                     </div>
                     <div className="h-[41px] flex items-end relative">
-                      <p className="absolute text-[11px] font-[300] text-[#474747] text-nowrap right-[-103px] top-[2px]">{task.employee.department.name}</p>
                      <div className="flex gap-[12px] h-[32px] items-center">
                       <img src={task.employee.avatar} alt="" className="w-[32px] h-[32px]"/>
+                      <div className="relative">
+                      <p className="absolute left-0 top-[-14px] text-[11px] font-[300] text-[#474747] text-nowrap">{task.employee.department.name}</p>
                       <p className="text-[14px] leading-[150%] text-[#0D0F10]">{task.employee.name} {task.employee.surname}</p>
+                      </div>
                       </div>
                     </div>
                   </div>

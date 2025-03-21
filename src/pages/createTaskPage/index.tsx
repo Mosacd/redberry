@@ -85,7 +85,7 @@ const CreateTaskPage = () => {
 
             
           
-          if(title.length <= 2 || title.length > 255 || description.length < 2 || description.length > 255 ||
+          if(title.length <= 2 || title.length > 255 || (description.length > 0 && description.length < 2) || description.length > 255 ||
             employeeId == null || priorityId == null || statusId == null || deadline == null || departmentId == null ||
             deadline < new Date()
            ) {

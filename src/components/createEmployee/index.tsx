@@ -272,8 +272,8 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
     
               {/* Buttons */}
               <div className="flex justify-end gap-[22px] mt-[15px]">
-                <button onClick={() => {setEmpFormOpen(false)}} type="button" className="px-[16px] py-[10px] border-[1px] text-[#343A40] border-[#8338EC] hover:cursor-pointer hover:border-[#B588F4] rounded-[5px]">გაუქმება</button>
-                <button type="submit" className="px-[20px] py-[10px] bg-[#8338EC] text-[#FFFFFF] text-[18px] rounded-[5px] hover:cursor-pointer hover:bg-[#B588F4]">
+                <button onClick={() => {setEmpFormOpen(false)}} type="button" className="px-[16px] h-[42px] py-[10px] border-[1px] text-[#343A40] border-[#8338EC] hover:cursor-pointer hover:border-[#B588F4] rounded-[5px]">გაუქმება</button>
+                <button type="submit" className="px-[20px] h-[42px] py-[10px] bg-[#8338EC] text-[#FFFFFF] text-[18px] rounded-[5px] hover:cursor-pointer hover:bg-[#B588F4]">
                   დაამატე თანამშრომელი
                 </button>
               </div>
