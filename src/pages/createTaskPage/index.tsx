@@ -22,16 +22,27 @@ const CreateTaskPage = () => {
         const{data:statuses = [], isLoading:isLodingSta} =   useGetStatuses();
         const{ mutate:postTask } = usePostTask();
 
-        const [title, setTitle] = useState<string>("");
-        const [departmentId, setDepartmentId] = useState<number | null>(null);
-        const [description, setDescription] = useState<string>("");
-        const [employeeId, setEmployeeId] = useState<number | null>(null);
-        const [priorityId, setPriorityId] = useState<number | null>(null);
-        const [statusId, setStatusId] = useState<number | null>(null);
-        const [deadline, setDeadline] = useState<Date | null>(null);
+        const [title, setTitle] = useState<string>(localStorage.getItem("title") || "");
+        const [departmentId, setDepartmentId] = useState<number | null>(
+          localStorage.getItem("departmentId") ? Number(localStorage.getItem("departmentId")) : null
+        );
+        const [description, setDescription] = useState<string>(localStorage.getItem("description") || "");
+        const [employeeId, setEmployeeId] = useState<number | null>(
+          localStorage.getItem("employeeId") ? Number(localStorage.getItem("employeeId")) : null
+        );
+        const [priorityId, setPriorityId] = useState<number | null>(
+          localStorage.getItem("priorityId") ? Number(localStorage.getItem("priorityId")) : null
+        );
+        const [statusId, setStatusId] = useState<number | null>(
+          localStorage.getItem("statusId") ? Number(localStorage.getItem("statusId")) : null
+        );
+        const [deadline, setDeadline] = useState<Date | null>(
+          localStorage.getItem("deadline") ? new Date(localStorage.getItem("deadline")!) : null
+        );
         const [titleTouched, setTitleTouched] = useState(false);
         const [descriptionTouched, setDescriptionTouched] = useState(false);
       
+        
        const formattedDate = (due_at:string) => {
            return  dayjs(due_at)
              .locale("ka")
@@ -53,12 +64,24 @@ const CreateTaskPage = () => {
       }, [statuses, statusId]);
 
 
+
+      useEffect(() => {
+        localStorage.setItem("title", title);
+        localStorage.setItem("departmentId", departmentId?.toString() || "");
+        localStorage.setItem("description", description);
+        localStorage.setItem("employeeId", employeeId?.toString() || "");
+        localStorage.setItem("priorityId", priorityId?.toString() || "");
+        localStorage.setItem("statusId", statusId?.toString() || "");
+        localStorage.setItem("deadline", deadline ? deadline.toISOString() : "");
+      }, [title, departmentId, description, employeeId, priorityId, statusId, deadline]);
+
+
       const handleForm = (e:FormEvent) => {
           e.preventDefault()
 
             
           
-          if(title.length < 2 || title.length > 255 || description.length < 2 || description.length > 255 ||
+          if(title.length <= 2 || title.length > 255 || description.length < 2 || description.length > 255 ||
             employeeId == null || priorityId == null || statusId == null || deadline == null || departmentId == null ||
             deadline < new Date()
            ) {
@@ -78,9 +101,22 @@ const CreateTaskPage = () => {
          
           
 
-           return postTask( { name:title, description:description, due_date:formattedDate(deadline?.toString()), status_id:statusId, employee_id:employeeId, priority_id:priorityId})
+           return postTask( { name:title, description:description, due_date:formattedDate(deadline?.toString()), status_id:statusId, employee_id:employeeId, priority_id:priorityId},
+           {
+            onSuccess: () => {
+              // Reset state
+              setTitle("");
+              setDepartmentId(null);
+              setDescription("");
+              setEmployeeId(null);
+              setPriorityId(null);
+              setStatusId(null);
+              setDeadline(null);}
+            }
+            )
 
-      } 
+      
+          } 
 
 
       if(isLoadingDep || isLodingEmp || isLodingPri || isLodingSta){
@@ -108,7 +144,7 @@ const CreateTaskPage = () => {
                     required className={`text-[14px] font-[300] focus:outline-none text-[#0D0F10] rounded-[5px]
                      w-[550px] h-[45px] border-[1px] p-[14px] bg-[#FFFFFF] border-[#DEE2E6] id="title" 
                      type="text" placeholder="სათაური ${
-                      (title.length > 0 || titleTouched) && (    (!(title.length >= 2) || !(title.length <= 255))
+                      (title.length > 0 || titleTouched) && (    (!(title.length >= 3) || !(title.length <= 255))
             ? "border-[#FA4D4D]" : "border-[#DEE2E6]")
               
           }
@@ -118,10 +154,10 @@ const CreateTaskPage = () => {
                  <div className="mt-[4px] flex flex-col gap-[2px] px-[1px]">
                  <span className={`flex items-center font-[350] text-[10px] text-[#6C757D] h-[12px]
                  ${
-                  (title.length > 0 || titleTouched) &&  (!(title.length >= 2)
+                  (title.length > 0 || titleTouched) &&  (!(title.length >= 3)
                     ? "text-red-500" : "text-[#08A508]")
                 }
-                 `}>მინიმუმ 2 სიმბოლო</span>
+                 `}>მინიმუმ 3 სიმბოლო</span>
                  <span className={`flex items-center font-[350] text-[10px] text-[#6C757D] h-[12px]
                  ${
                   (title.length > 0 || titleTouched) && ( !(title.length <= 255) 
@@ -170,7 +206,7 @@ const CreateTaskPage = () => {
                     onChange={(e) => setDescription(e.target.value)}
           className={`w-[550px] h-[133px] rounded-[5px] border-[1px] border-[#DEE2E6] focus:outline-none resize-none p-[14px] text-[14px] font-[300] leading-[150%] bg-[#FFFFFF]
             ${
-              (description.length > 0 || descriptionTouched) && (  (!(description.length >= 2) || !(description.length <= 255))
+              (description.length > 0 || descriptionTouched) && (  (!(description.length >= 4) || !(description.length <= 255))
               ? "border-[#FA4D4D]" : "border-[#DEE2E6]" )
                 
             }
@@ -179,11 +215,11 @@ const CreateTaskPage = () => {
       <div className="mt-[4px] flex flex-col gap-[2px] px-[1px]">
                  <span className={`flex items-center font-[350] text-[10px] text-[#6C757D] h-[12px]
                   ${
-                    (description.length > 0 || descriptionTouched)  &&  (  !(description.length >= 2)
+                    (description.length > 0 || descriptionTouched)  &&  (  !(description.length >= 4)
                       ? "text-red-500" : "text-[#08A508]" )
                       
                   }
-                  `}>მინიმუმ 2 სიმბოლო</span>
+                  `}>მინიმუმ 4 სიმბოლო</span>
                  <span className={`flex items-center font-[350] text-[10px] text-[#6C757D] h-[12px]
                   ${
                     (description.length > 0 || descriptionTouched) && ( !(description.length <= 255)
