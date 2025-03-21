@@ -12,6 +12,7 @@ import {ka} from "date-fns/locale/ka";
 import "./datepicker.css";
 import { usePostTask } from "@/reactQuery/mutation/tasks";
 import dayjs from "dayjs";
+import CreateEmployeeFrom from "@/components/createEmployee";
 
 const CreateTaskPage = () => {
 
@@ -21,6 +22,9 @@ const CreateTaskPage = () => {
         const{data:priorities = [], isLoading:isLodingPri} =   useGetPriorities();
         const{data:statuses = [], isLoading:isLodingSta} =   useGetStatuses();
         const{ mutate:postTask } = usePostTask();
+        const [empFormOpen, setEmpFormOpen] = useState<boolean>(false)
+
+       
 
         const [title, setTitle] = useState<string>(localStorage.getItem("title") || "");
         const [departmentId, setDepartmentId] = useState<number | null>(
@@ -248,7 +252,7 @@ const CreateTaskPage = () => {
                     
                   </SelectTrigger>
                   <SelectContent className="font-[300] w-[550px]">
-                    <button className="relative hover:cursor-pointer leading-[100%] hover:bg-[#F8F9FA] font-[400] flex justify-start w-full items-center h-[48px] p-[14px] pl-[11px]">
+                    <button onClick={() => {setEmpFormOpen(true)}} className="relative hover:cursor-pointer leading-[100%] hover:bg-[#F8F9FA] font-[400] flex justify-start w-full items-center h-[48px] p-[14px] pl-[11px]">
                   <div className="flex items-center gap-[10px]">
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect x="0.75" y="0.75" width="16.5" height="16.5" rx="8.25" stroke="#8338EC" stroke-width="1.5"/>
@@ -352,6 +356,7 @@ const CreateTaskPage = () => {
 </div>
                 </form>
             </div>
+            {empFormOpen && <CreateEmployeeFrom setEmpFormOpen = {setEmpFormOpen}/>}
         </div>
     )
 }

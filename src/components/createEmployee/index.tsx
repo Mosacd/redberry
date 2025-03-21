@@ -1,14 +1,110 @@
 import pitureLogo from "@/assets/Frame 1000005790.svg"
-import picture from "@/assets/Frame 1000005909.png"
-import binLogo from "@/assets/Frame 1000006036.svg"
+
 import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger } from "../ui/select"
 
 import { useGetDepartments } from "@/reactQuery/query/departments"
+import { useEffect, useRef, useState } from "react"
 
 const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetStateAction<boolean>>}> = ({setEmpFormOpen}) => {
 
 
+
+
+  
  const{data:departments = [], isLoading:isLoadingDep } =   useGetDepartments();
+
+        const [name, setName] = useState<string>(localStorage.getItem("name") || "");
+        const [surname, setSurname] = useState<string>(
+         localStorage.getItem("name") || ""
+        );
+
+        const [avatar, setAvatar] = useState<string>(localStorage.getItem("avatar") || "");
+        
+        const [EmpDepartmentId, setEmpDepartmentId] = useState<number | null>(
+          localStorage.getItem("EmpDepartmentId") ? Number(localStorage.getItem("EmpDepartmentId")) : null
+        );
+
+        const [nameTouched, setNameTouched] = useState(false);
+        const [surnameTouched, setSurnameTouched] = useState(false);
+      
+
+        const fileInputRef = useRef<HTMLInputElement>(null);
+
+        const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+          const file = event.target.files?.[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => setAvatar(reader.result as string);
+            reader.readAsDataURL(file);
+          }
+        };
+        
+        const handleClick = () => {
+          fileInputRef.current?.click();
+        };
+        
+              useEffect(() => {
+                localStorage.setItem("name", name);
+                localStorage.setItem("EmpDepartmentId", EmpDepartmentId?.toString() || "");
+                localStorage.setItem("surname", surname);
+                localStorage.setItem("avatar", avatar || "");
+              }, [name, EmpDepartmentId, surname, avatar]);
+
+              useEffect(() => {
+                  if(avatar != ""){
+                    if (fileInputRef.current) {
+                      fileInputRef.current.disabled = true;
+                    }
+                  } else {
+                    if (fileInputRef.current) {
+                      fileInputRef.current.disabled = false;
+                    }
+                  }
+
+              },[avatar])
+
+
+              //  const handleForm = (e:FormEvent) => {
+              //           e.preventDefault()
+              
+                          
+                        
+              //           if(title.length <= 2 || title.length > 255 || description.length < 2 || description.length > 255 ||
+              //             employeeId == null || priorityId == null || statusId == null || deadline == null || departmentId == null ||
+              //             deadline < new Date()
+              //            ) {
+                          
+              //             console.log("wrong")
+              //             return
+              //           }   
+              
+              //           console.log(title)
+              //             console.log(description)
+              //             console.log(employeeId)
+              //             console.log(priorityId)
+              //             console.log( statusId)
+              //             console.log(formattedDate(deadline?.toString()))
+              //             console.log(departmentId)
+              //             console.log(deadline < new Date())
+                       
+                        
+              
+              //            return postTask( { name:title, description:description, due_date:formattedDate(deadline?.toString()), status_id:statusId, employee_id:employeeId, priority_id:priorityId},
+              //            {
+              //             onSuccess: () => {
+              //               // Reset state
+              //               setTitle("");
+              //               setDepartmentId(null);
+              //               setDescription("");
+              //               setEmployeeId(null);
+              //               setPriorityId(null);
+              //               setStatusId(null);
+              //               setDeadline(null);}
+              //             }
+              //             )
+              
+                    
+              //           } 
 
   if(isLoadingDep){
     return
@@ -25,66 +121,104 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
             </button>
 
     <div className="w-[813px]">
-            {/* Title */}
+        
             <h1 className="text-center text-[32px] font-[500] mb-[45px]">თანამშრომლის დამატება</h1>
     
-            {/* Form */}
+           
             <form className="flex flex-col gap-[45px]">
-              {/* Title and Description */}
+            
               <div className="flex w-full justify-between gap-[45px]">
                 <div>
                   <label className="block text-[#343A40] text-[14px] font-[500] h-[17px]">სახელი*</label>
                   <input
                     type="text"
-                    className="w-[384px] h-[42px] border-[1px] border-[#CED4DA] text-[#0D0F10] p-[10px] rounded-[6px] text-[14px] font-[300] bg-[#FFFFFF] outline-none"
+                    onBlur={() => setNameTouched(true)}
+                    onChange={(e) => setName(e.target.value)}
+                    value={name}
+                    className={`w-[384px] h-[42px] border-[1px] border-[#CED4DA] text-[#0D0F10] p-[10px] rounded-[6px] text-[14px] font-[300] bg-[#FFFFFF] outline-none
+                        ${
+                        (name.length > 0 || nameTouched) && (    (!(name.length >= 3) || !(name.length <= 255))
+              ? "border-[#FA4D4D]" : "border-[#DEE2E6]")
+            }
+                      `}
                   />
                   <div className="mt-[6px] flex flex-col gap-[2px] px-[1px]">
                  <span className={`flex items-center font-[350] text-[10px] text-[#6C757D] h-[16px]
-               
+                ${
+                (name.length > 0 || nameTouched) &&  (!(name.length >= 3)
+                  ? "text-red-500" : "text-[#08A508]")
+              }
                  `}>მინიმუმ 3 სიმბოლო</span>
                  <span className={`flex items-center font-[350] text-[10px] text-[#6C757D] h-[16px]
-                
+                 ${ (name.length > 0 || nameTouched) && ( !(name.length <= 255) 
+                    ? "text-red-500" : "text-[#08A508]")
+                }
                  `}>მაქსიმუმ 255 სიმბოლო</span>
                  </div>
                 </div>
                 <div>
                   <label className="block text-[#343A40] text-[14px] font-[500] h-[17px]">გვარი*</label>
                   <input
+                    onChange={(e) => setSurname(e.target.value)}
                     type="text"
-                    className="w-[384px] h-[42px] border-[1px] border-[#CED4DA] text-[#0D0F10] p-[10px] rounded-[6px] text-[14px] font-[300] bg-[#FFFFFF] outline-none"
+                    onBlur={() => setSurnameTouched(true)}
+                    value={surname}
+                    className={`w-[384px] h-[42px] border-[1px] border-[#CED4DA] text-[#0D0F10] p-[10px] rounded-[6px] text-[14px] font-[300] bg-[#FFFFFF] outline-none
+                      ${
+                        (surname.length > 0 || surnameTouched) && (    (!(surname.length >= 3) || !(surname.length <= 255))
+              ? "border-[#FA4D4D]" : "border-[#DEE2E6]")
+                
+            }
+                    `}
                   />
                   <div className="mt-[6px] flex flex-col gap-[2px] px-[1px]">
                  <span className={`flex items-center font-[350] text-[10px] text-[#6C757D] h-[16px]
-               
+               ${
+                (surname.length > 0 || surnameTouched) &&  (!(surname.length >= 3)
+                  ? "text-red-500" : "text-[#08A508]")
+              }
                  `}>მინიმუმ 3 სიმბოლო</span>
                  <span className={`flex items-center font-[350] text-[10px] text-[#6C757D] h-[16px]
                 
+                ${ (surname.length > 0 || surnameTouched) && ( !(surname.length <= 255) 
+                    ? "text-red-500" : "text-[#08A508]")
+                }
                  `}>მაქსიმუმ 255 სიმბოლო</span>
                  </div>
                 </div>
               </div>
     
               {/* Image Upload */}
-              <div>
+              <div >
                 <label className="block text-[#343A40] font-[500] h-[17px] text-[14px] mb-[8px]">ავატარი*</label>
-                <div className="border-[1px] hover:cursor-pointer h-[120px] border-dashed border-[#CED4DA] rounded-[8px] w-[813px] p-6 flex justify-center items-center relative">
+                <div onClick={handleClick} className="border-[1px] hover:cursor-pointer h-[120px] border-dashed border-[#CED4DA] rounded-[8px] w-[813px] p-6 flex justify-center items-center relative">
                   
-                  {/* <div className="flex flex-col gap-[5px] mt-[50px] mb-[20px] items-center justify-center">
+                <input
+          type="file"
+          ref={fileInputRef}
+          className="hidden"
+          accept="image/*"
+          onChange={handleImageChange}
+        />
+
+              {avatar == "" ?  (<div className="flex flex-col gap-[5px] mt-[50px] mb-[20px] items-center justify-center">
                     <img
                     src={pitureLogo}
                     alt="avatar"
                     className="w-[24px] h-[24px] rounded-full object-cover"
                   />
                   <span className="block text-[14px] text-[#343A40]">ატვირთე ფოტო</span>
-                  </div> */}
+                  </div>) :
 
-                  <div className="relative w-[88px] h-[88px]">
+                  (<div className="relative w-[88px] h-[88px]">
                   <img
-                    src={picture}
+                    src={avatar}
                     alt="avatar"
                     className="w-[88px] h-[88px] rounded-full object-cover hover:cursor-auto"
                   />
-                     <button className="absolute right-[-2px] bottom-[-2px] flex items-center justify-center w-[24px] h-[24px] hover:cursor-pointer bg-white  rounded-[30px]"
+                     <button onClick={(e) => {
+                      e.stopPropagation()
+                      return setAvatar('')}} className="absolute right-[-2px] bottom-[-2px] flex items-center justify-center w-[24px] h-[24px] hover:cursor-pointer bg-white  rounded-[30px]"
                        style={{ 
                         boxShadow: '0 0 0 0.2px #6C757D'
                      }}
@@ -97,7 +231,7 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
 </svg>
                   </button>
                   
-                  </div>
+                  </div>)}
                
                 </div>
               </div>
@@ -111,13 +245,13 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
 </svg>
               </label>
               <Select 
-                    // value={departmentId?.toString()}
-                    // onValueChange={(value) => setDepartmentId(Number(value))}
+                    value={EmpDepartmentId?.toString()}
+                    onValueChange={(value) => setEmpDepartmentId(Number(value))}
                      required>
                   <SelectTrigger   className="w-[384px] h-[42px] rounded-[6px] border-[1px] p-[10px] gap-[6px]">
                     <SelectValue  placeholder = {<span className="font-[300] text-[#0D0F10] text-[14px]">აირჩიე დეპარტამენტი</span>}></ SelectValue>
                   </SelectTrigger>
-                  <SelectContent className="font-[300] w-[384px]">
+                  <SelectContent className="font-[300] w-[384px] z-50">
                     {departments?.map((department) => <SelectItem value={department.id.toString()}>
                      <span className="font-[300] text-[14px] text-[#0D0F10]">
                       {department.name}
@@ -130,7 +264,7 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
     
               {/* Buttons */}
               <div className="flex justify-end gap-[22px] mt-[15px]">
-                <button type="button" className="px-[16px] py-[10px] border-[1px] text-[#343A40] border-[#8338EC] hover:cursor-pointer hover:border-[#B588F4] rounded-[5px]">გაუქმება</button>
+                <button onClick={() => {setEmpFormOpen(false)}} type="button" className="px-[16px] py-[10px] border-[1px] text-[#343A40] border-[#8338EC] hover:cursor-pointer hover:border-[#B588F4] rounded-[5px]">გაუქმება</button>
                 <button type="submit" className="px-[20px] py-[10px] bg-[#8338EC] text-[#FFFFFF] text-[18px] rounded-[5px] hover:cursor-pointer hover:bg-[#B588F4]">
                   დაამატე თანამშრომელი
                 </button>
