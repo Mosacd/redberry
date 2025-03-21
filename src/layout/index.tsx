@@ -9,7 +9,9 @@ const DashboardLayout = () => {
         <>
             <Header setEmpFormOpen = {setEmpFormOpen}/> 
             {empFormOpen && <CreateEmployeeFrom setEmpFormOpen = {setEmpFormOpen}/>}
+           <div className="mb-[100px]">
             <Outlet />
+            </div>
             </> 
      )
 
