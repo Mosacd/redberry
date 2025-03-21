@@ -3,7 +3,9 @@ import pitureLogo from "@/assets/Frame 1000005790.svg"
 import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger } from "../ui/select"
 
 import { useGetDepartments } from "@/reactQuery/query/departments"
-import { useEffect, useRef, useState } from "react"
+import { FormEvent, useEffect, useRef, useState } from "react"
+
+import { usePostEmployee } from "@/reactQuery/mutation/employee";
 
 const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetStateAction<boolean>>}> = ({setEmpFormOpen}) => {
 
@@ -12,6 +14,7 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
 
   
  const{data:departments = [], isLoading:isLoadingDep } =   useGetDepartments();
+    const { mutate :postEmp } = usePostEmployee();
 
         const [name, setName] = useState<string>(localStorage.getItem("name") || "");
         const [surname, setSurname] = useState<string>(
@@ -19,6 +22,7 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
         );
 
         const [avatar, setAvatar] = useState<string>(localStorage.getItem("avatar") || "");
+        const [avatarFile, setAvatarFile] = useState<File | null>(null);
         
         const [EmpDepartmentId, setEmpDepartmentId] = useState<number | null>(
           localStorage.getItem("EmpDepartmentId") ? Number(localStorage.getItem("EmpDepartmentId")) : null
@@ -32,7 +36,9 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
 
         const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
           const file = event.target.files?.[0];
+          
           if (file) {
+            setAvatarFile(file);
             const reader = new FileReader();
             reader.onloadend = () => setAvatar(reader.result as string);
             reader.readAsDataURL(file);
@@ -64,47 +70,49 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
               },[avatar])
 
 
-              //  const handleForm = (e:FormEvent) => {
-              //           e.preventDefault()
-              
+               const handleForm = (e:FormEvent) => {
+                        e.preventDefault()
+
+                        if (!avatarFile) {
+                          console.log("No file selected");
+                          return;
+                        }
+                        console.log(avatarFile)
                           
                         
-              //           if(title.length <= 2 || title.length > 255 || description.length < 2 || description.length > 255 ||
-              //             employeeId == null || priorityId == null || statusId == null || deadline == null || departmentId == null ||
-              //             deadline < new Date()
-              //            ) {
+                        if(name.length <= 2 || name.length > 255 || surname.length < 2 || surname.length > 255 ||
+                          avatar == "" || EmpDepartmentId == null 
+                         
+                         ) {
                           
-              //             console.log("wrong")
-              //             return
-              //           }   
+                          console.log("wrong")
+                          return
+                        }   
               
-              //           console.log(title)
-              //             console.log(description)
-              //             console.log(employeeId)
-              //             console.log(priorityId)
-              //             console.log( statusId)
-              //             console.log(formattedDate(deadline?.toString()))
-              //             console.log(departmentId)
-              //             console.log(deadline < new Date())
-                       
-                        
-              
-              //            return postTask( { name:title, description:description, due_date:formattedDate(deadline?.toString()), status_id:statusId, employee_id:employeeId, priority_id:priorityId},
-              //            {
-              //             onSuccess: () => {
-              //               // Reset state
-              //               setTitle("");
-              //               setDepartmentId(null);
-              //               setDescription("");
-              //               setEmployeeId(null);
-              //               setPriorityId(null);
-              //               setStatusId(null);
-              //               setDeadline(null);}
-              //             }
-              //             )
-              
-                    
-              //           } 
+                        console.log(name)
+                          console.log(surname)
+                          console.log(avatar)
+                          console.log(EmpDepartmentId)
+                          
+                          const formData = new FormData();
+                          formData.append("name", name);
+                          formData.append("surname", surname);
+                          formData.append("avatar", avatarFile); // Append file here
+                          formData.append("department_id", String(EmpDepartmentId));
+                  
+                         return postEmp( formData,
+                         {
+                          onSuccess: () => {
+                            // Reset state
+                            setName("");
+                            setSurname("");
+                            setAvatar("");
+                            setEmpDepartmentId(null);
+                          }
+                        }
+                         )
+
+                        } 
 
   if(isLoadingDep){
     return
@@ -125,7 +133,7 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
             <h1 className="text-center text-[32px] font-[500] mb-[45px]">თანამშრომლის დამატება</h1>
     
            
-            <form className="flex flex-col gap-[45px]">
+            <form onSubmit={handleForm} className="flex flex-col gap-[45px]">
             
               <div className="flex w-full justify-between gap-[45px]">
                 <div>

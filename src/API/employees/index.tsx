@@ -13,6 +13,20 @@ export const getEmployees = async () : Promise<Employee[]>=> {
     });
 }
 
+
+export const postEmployee = async (data: FormData): Promise<void> => {
+  await httpClient.post(`/employees`,
+    data,
+   {
+     headers: {
+       Authorization: `Bearer ${personalToken}`,
+     }
+   }).catch((error) => {
+     console.error("Error Updating Task Status:", error);
+     throw error;
+ });
+}
+
 export type Employee = {
     id: number,
     name: string,
@@ -23,4 +37,6 @@ export type Employee = {
      name: string
     }
   }
+
+  
 
