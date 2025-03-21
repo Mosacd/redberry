@@ -21,7 +21,7 @@ const GeneralTaskPage = () => {
     const [appliedDepartments, setAppliedDepartments] = useState<string[]>(() => getArrayFromParams("departments"));
     const [appliedPriorities, setAppliedPriorities] = useState<string[]>(() => getArrayFromParams("priorities"));
     const [appliedEmployee, setAppliedEmployee] = useState<string | null>(() => getStringFromParams("employee"));
-
+ 
 
     useEffect(() => {
         setSearchParams({
@@ -40,7 +40,7 @@ const GeneralTaskPage = () => {
         appliedDepartments={appliedDepartments} appliedPriorities={appliedPriorities} appliedEmployee={appliedEmployee}
         setAppliedDepartments ={setAppliedDepartments} setAppliedPriorities = {setAppliedPriorities} setAppliedEmployee = {setAppliedEmployee} />
          
-        
+         
         
         
         <TaskList appliedDepartments={appliedDepartments} appliedPriorities={appliedPriorities} appliedEmployee={appliedEmployee}/>
