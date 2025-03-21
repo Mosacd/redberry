@@ -108,7 +108,7 @@ const TaskList: React.FC<{
                           {formattedDate(task.due_date)}
                         </p>
                       </div>
-                      <div className="flex flex-col justify-between h-[64px] gap-[12px] w-[320px] break-all overflow-auto">
+                      <div className="flex flex-col justify-between h-[64px] gap-[12px] w-[320px] break-all overflow-hidden">
                         <h2 className="font-[600] text-[15px] text-[#212529]">
                           {task.name}
                         </h2>
