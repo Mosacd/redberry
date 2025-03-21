@@ -5,14 +5,14 @@ import { cn } from "@/lib/utils"
 
 function Checkbox({
   className,
-  checkmarkColor = "#8338EC", // Default color
+  checkmarkColor = "#212529", // Default color
   ...props
 }: React.ComponentProps<typeof CheckboxPrimitive.Root> & { checkmarkColor?: string }) {
   return (
     <CheckboxPrimitive.Root
       data-slot="checkbox"
       className={cn(
-        "peer  w-[22px] h-[22px] rounded-[6px] border-[2px] border-[#8338EC]",
+        "peer  w-[22px] h-[22px] rounded-[6px] border-[2px] border-[#212529]",
         className
       )}
       {...props}

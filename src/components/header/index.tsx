@@ -3,7 +3,7 @@ import add from '@/assets/add.svg'
 import { Link } from 'react-router-dom';
 
 const Header: React.FC <{setEmpFormOpen:React.Dispatch<React.SetStateAction<boolean>>}> = ({setEmpFormOpen}) => {
-// width="210" height="38"
+
     return(
         <div className='flex w-full justify-between px-[120px] pr-[110px] py-[30px]'>
         <Link className='flex items-center' to='/'><img className='w-[210px] h-[38px]' src={logo} alt="" /></Link>

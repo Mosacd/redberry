@@ -124,7 +124,7 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
                         } 
 
                         const handleBackdropClick = (e: React.MouseEvent) => {
-                          // Close only if the click is directly on the backdrop (not on the form)
+                         
                           if (e.target === e.currentTarget) {
                             handleClose()
                           }
