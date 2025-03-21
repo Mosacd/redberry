@@ -94,14 +94,7 @@ const CreateTaskPage = () => {
             return
           }   
 
-          console.log(title)
-            console.log(description)
-            console.log(employeeId)
-            console.log(priorityId)
-            console.log( statusId)
-            console.log(formattedDate(deadline?.toString()))
-            console.log(departmentId)
-            console.log(deadline < new Date())
+        
          
           
 

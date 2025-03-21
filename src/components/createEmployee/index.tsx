@@ -18,7 +18,7 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
 
         const [name, setName] = useState<string>(localStorage.getItem("name") || "");
         const [surname, setSurname] = useState<string>(
-         localStorage.getItem("name") || ""
+         localStorage.getItem("surname") || ""
         );
 
         const [avatar, setAvatar] = useState<string>(localStorage.getItem("avatar") || "");
@@ -70,6 +70,13 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
               },[avatar])
 
 
+              function isValidName(value:string) {
+                const regex = /^[a-zA-Z\u10A0-\u10FF]+$/; // Only Latin and Georgian letters
+                console.log("regex :" + regex.test(value))
+                return regex.test(value);
+              }
+
+              
                const handleForm = (e:FormEvent) => {
                         e.preventDefault()
 
@@ -77,11 +84,13 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
                           console.log("No file selected");
                           return;
                         }
-                        console.log(avatarFile)
-                          
+                    
                         
-                        if(name.length <= 2 || name.length > 255 || surname.length < 2 || surname.length > 255 ||
-                          avatar == "" || EmpDepartmentId == null 
+                        if(name.length < 2 || name.length > 255 || 
+                          surname.length < 2 || surname.length > 255 || 
+                          !isValidName(name) || !isValidName(surname) || 
+                          avatar.trim() === "" || 
+                          EmpDepartmentId == null
                          
                          ) {
                           
@@ -97,7 +106,7 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
                           const formData = new FormData();
                           formData.append("name", name);
                           formData.append("surname", surname);
-                          formData.append("avatar", avatarFile); // Append file here
+                          formData.append("avatar", avatarFile);
                           formData.append("department_id", String(EmpDepartmentId));
                   
                          return postEmp( formData,
@@ -114,15 +123,30 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
 
                         } 
 
+                        const handleBackdropClick = (e: React.MouseEvent) => {
+                          // Close only if the click is directly on the backdrop (not on the form)
+                          if (e.target === e.currentTarget) {
+                            handleClose()
+                          }
+                        };
+
+                     const  handleClose = () => {
+                      localStorage.setItem("name", "");
+                      localStorage.setItem("EmpDepartmentId", "");
+                      localStorage.setItem("surname", "");
+                      localStorage.setItem("avatar", "");
+                          setEmpFormOpen(false);
+                        }
+
   if(isLoadingDep){
     return
   }
 
     return (
-        <div className="fixed inset-0 z-50 bg-black/15 backdrop-blur-xs">
+        <div  onClick={handleBackdropClick} className="fixed inset-0 z-50 bg-black/15 backdrop-blur-xs">
           <div className="m-auto flex flex-col gap-[37px] pt-[40px] pr-[50px] pb-[60px] pl-[50px] h-[766px] bg-[#FFFFFF] w-[913px] mt-[118px] rounded-[10px] shadow-lg">
             {/* Close Button */}
-            <button onClick={() => {setEmpFormOpen(false)}} className="w-[40px] h-[40px] hover:cursor-pointer self-end">
+            <button onClick={handleClose} className="w-[40px] h-[40px] hover:cursor-pointer self-end">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M20 0C8.955 0 0 8.955 0 20C0 31.045 8.955 40 20 40C31.045 40 40 31.045 40 20C40 8.955 31.045 0 20 0ZM22.3567 20C22.3567 20 27.5883 25.2317 27.845 25.4883C28.4967 26.14 28.4967 27.195 27.845 27.845C27.1933 28.4967 26.1383 28.4967 25.4883 27.845C25.2317 27.59 20 22.3567 20 22.3567C20 22.3567 14.7683 27.5883 14.5117 27.845C13.86 28.4967 12.805 28.4967 12.155 27.845C11.5033 27.1933 11.5033 26.1383 12.155 25.4883C12.41 25.2317 17.6433 20 17.6433 20C17.6433 20 12.4117 14.7683 12.155 14.5117C11.5033 13.86 11.5033 12.805 12.155 12.155C12.8067 11.5033 13.8617 11.5033 14.5117 12.155C14.7683 12.41 20 17.6433 20 17.6433C20 17.6433 25.2317 12.4117 25.4883 12.155C26.14 11.5033 27.195 11.5033 27.845 12.155C28.4967 12.8067 28.4967 13.8617 27.845 14.5117C27.59 14.7683 22.3567 20 22.3567 20Z" fill="#DEE2E6"/>
 </svg>
@@ -139,6 +163,7 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
                 <div>
                   <label className="block text-[#343A40] text-[14px] font-[500] h-[17px]">სახელი*</label>
                   <input
+                    required
                     type="text"
                     onBlur={() => setNameTouched(true)}
                     onChange={(e) => setName(e.target.value)}
@@ -167,6 +192,7 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
                 <div>
                   <label className="block text-[#343A40] text-[14px] font-[500] h-[17px]">გვარი*</label>
                   <input
+                   required
                     onChange={(e) => setSurname(e.target.value)}
                     type="text"
                     onBlur={() => setSurnameTouched(true)}
@@ -202,6 +228,7 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
                 <div onClick={handleClick} className="border-[1px] hover:cursor-pointer h-[120px] border-dashed border-[#CED4DA] rounded-[8px] w-[813px] p-6 flex justify-center items-center relative">
                   
                 <input
+                 required
           type="file"
           ref={fileInputRef}
           className="hidden"
@@ -272,7 +299,7 @@ const CreateEmployeeFrom:React.FC <{setEmpFormOpen:React.Dispatch<React.SetState
     
               {/* Buttons */}
               <div className="flex justify-end gap-[22px] mt-[15px]">
-                <button onClick={() => {setEmpFormOpen(false)}} type="button" className="px-[16px] h-[42px] py-[10px] border-[1px] text-[#343A40] border-[#8338EC] hover:cursor-pointer hover:border-[#B588F4] rounded-[5px]">გაუქმება</button>
+                <button onClick={handleClose} type="button" className="px-[16px] h-[42px] py-[10px] border-[1px] text-[#343A40] border-[#8338EC] hover:cursor-pointer hover:border-[#B588F4] rounded-[5px]">გაუქმება</button>
                 <button type="submit" className="px-[20px] h-[42px] py-[10px] bg-[#8338EC] text-[#FFFFFF] text-[18px] rounded-[5px] hover:cursor-pointer hover:bg-[#B588F4]">
                   დაამატე თანამშრომელი
                 </button>
